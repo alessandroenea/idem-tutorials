@@ -1,3 +1,61 @@
+# HOWTO Install and Configure a Shibboleth IdP v5.x on Debian-Ubuntu Linux with Apache + Jetty
+
+<img src="https://wiki.idem.garr.it/IDEM_Approved.png" width="120" alt="image" />
+
+## Table of Contents
+
+1.  [Requirements](#requirements)
+    1.  [Hardware](#hardware)
+    2.  [Software](#software)
+    3.  [Others](#others)
+2.  [Notes](#notes)
+3.  [Configure the environment](#configure-the-environment)
+4.  [Configure APT Mirror](#configure-apt-mirror)
+5.  [Install Dependencies](#install-dependencies)
+6.  [Install software requirements](#install-software-requirements)
+    1.  [Install Apache Web Server](#install-apache-web-server)
+    2.  [Install Amazon Corretto JDK](#install-amazon-corretto-jdk)
+    3.  [Install Jetty Servlet Container](#install-jetty-servlet-container)
+7.  [Install Shibboleth Identity Provider](#install-shibboleth-identity-provider)
+8.  [Disable Jetty Directory Indexing](#disable-jetty-directory-indexing)
+9.  [Configure Apache Web Server](#configure-apache-web-server)
+10. [Configure Jetty Context Descriptor for IdP](#configure-jetty-context-descriptor-for-idp)
+11. [Configure Apache2 as the front-end of Jetty](#configure-apache2-as-the-front-end-of-jetty)
+12. [Configure Shibboleth Identity Provider Storage Service](#configure-shibboleth-identity-provider-storage-service)
+    1.  [Strategy A - Default (HTML Local Storage, Encryption GCM, No Database) - Recommended](#strategy-a---default-html-local-storage-encryption-gcm-no-database---recommended)
+    2.  [Strategy B - JDBC Storage Service - using a database](#strategy-b---jdbc-storage-service---using-a-database)
+13. [Configure the Directory Connection](#configure-the-directory-connection)
+    1.  [openLDAP directory connection](#openldap-directory-connection)
+    2.  [Active Directory connection](#active-directory-connection)
+14. [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
+    1.  [Strategy A - Computed mode (Default) - Recommended](#strategy-a---computed-mode-default---recommended)
+    2.  [Strategy B - Stored mode - using a database](#strategy-b---stored-mode---using-a-database)
+15. [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
+16. [Configure Shibboleth Identity Provider to release the eduPersonTargetedID](#configure-shibboleth-identity-provider-to-release-the-edupersontargetedid)
+    1.  [Strategy A - Computed mode - using the computed persistent NameID - Recommended](#strategy-a---computed-mode---using-the-computed-persistent-nameid---recommended)
+    2.  [Strategy B - Stored mode - using the persistent NameID database](#strategy-b---stored-mode---using-the-persistent-nameid-database)
+17. [Configure Shibboleth IdP Logging](#configure-shibboleth-idp-logging)
+18. [Translate IdP messages into preferred language](#translate-idp-messages-into-preferred-language)
+19. [Enrich IdP Login Page with the Institutional Logo](#enrich-idp-login-page-with-the-institutional-logo)
+20. [Enrich IdP Login Page with Information and Privacy Policy pages](#enrich-idp-login-page-with-information-and-privacy-policy-pages)
+21. [Change default login page footer text](#change-default-login-page-footer-text)
+22. [Change default "Forgot your password?" and "Need help?" endpoints](#change-default-forgot-your-password-and-need-help-endpoints)
+23. [Update IdP metadata](#update-idp-metadata)
+24. [Secure cookies and other IDP data](#secure-cookies-and-other-idp-data)
+25. [Configure Attribute Filter Policy to release attributes to Federated Resources](#configure-attribute-filter-policy-to-release-attributes-to-federated-resources)
+26. [Register the IdP on the IDEM Test Federation](#register-the-idp-on-the-idem-test-federation)
+27. [Appendix A: Enable Consent Module (Attribute Release + Terms of Use Consent)](#appendix-a-enable-consent-module-attribute-release--terms-of-use-consent)
+28. [Appendix B: Import persistent-id from a previous database](#appendix-b-import-persistent-id-from-a-previous-database)
+29. [Appendix C: Useful logs to find problems](#appendix-c-useful-logs-to-find-problems)
+30. [Appendix D: Connect an SP with the IdP](#appendix-d-connect-an-sp-with-the-idp)
+31. [Utilities](#utilities)
+32. [Useful Documentation](#useful-documentation)
+33. [Authors](#authors)
+
+## Requirements
+
+### Hardware
+
 Requirements Hardware
 CPU: 1 Core
 RAM: 3 GB
@@ -224,7 +282,7 @@ Usa /opt/jetty/start.d/idem.ini invece di start.ini
 # Set Java tmp location (relative to JETTY_BASE)
 -Djava.io.tmpdir=/opt/jetty/tmp
 
-# Enable Java’s headless mode
+# Enable Javaâ€™s headless mode
 # needed to work with graphics-based applications in Java without an actual display, keyboard, or mouse
 -Djava.awt.headless=true
 
