@@ -56,18 +56,18 @@
 
 ### Hardware
 
--   CPU: 2 Core (64 bit)
--   RAM: 2 GB (with IDEM MDX), 4GB (without IDEM MDX)
--   HDD: 10 GB
--   OS: Debian (>= 12) / Ubuntu LTS (>= 22.04)
+-   CPU: 1 Core (64 bit)
+-   RAM: 3 GB (with IDEM MDX), 4GB (without IDEM MDX)
+-   HDD: 20 GB
+-   OS: Fedora Cloud base generic (>= 40)
 
 ### Software
 
 -   Apache Web Server (*\>= 2.4*)
--   Jetty 11+ Servlet Container (*implementing Servlet API 5.0 or above*)
--   Amazon Corretto JDK 17
+-   Jetty 12+ Servlet Container (*implementing Servlet API 5.0 or above*)
+-   OpenJDK 23.0.0.0.37-1
 -   OpenSSL (*\>= 3.0.2*)
--   Shibboleth Identity Provider (*\>= 5.0.0*)
+-   Shibboleth Identity Provider (*\>= 5.1.3*)
 
 ### Others
 
