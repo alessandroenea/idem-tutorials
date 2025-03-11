@@ -96,113 +96,87 @@ Please remember to **replace all occurencences** of:
 
 ## Configure the environment
 
-1.  Become ROOT:
+1. Modify your ```/etc/hosts```:
+   * ```vim /etc/hosts```
+  
+     ```bash
+     127.0.1.1 idp.example.org idp
+     ```
+   (*Replace ```idp.example.org``` with your IdP Full Qualified Domain Name*)
 
-    ``` text
-    sudo su -
-    ```
+2. Be sure that your firewall **doesn't block** the traffic on port **443** (or you can't access to your IdP)
 
-2.  Be sure that your firewall **is not blocking** the traffic on port **443** and **80** for the IdP server.
+3. Define the costant ```JAVA_HOME```, ```IDP_HOME``` and ```IDP_SRC``` inside ```/etc/profile```:
+   * ```vi /etc/profile```
 
-3.  Set the IdP hostname:
+     ```bash
+     JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
+     IDP_HOME=/opt/shibboleth-idp
+     IDP_SRC=/opt/shibboleth-idp-5.1.3
+     ```
+   * ```source /etc/profile```
+   * ```export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64```
+   * ```export IDP_HOME=/opt/shibboleth-idp```
+   * ```export IDP_SRC=/opt/shibboleth-idp-5.1.3```
+  
+5. Move the Certificate and the Key file for HTTPS server from ```/tmp/``` to ```/root/certificates```:
+   * ```mkdir /root/certificates```
+   * ```mv /tmp/idp-cert-server.crt /root/certificates```
+   * ```mv /tmp/idp-key-server.key /root/certificates```
+   * ```mv /tmp/DigiCertCA.crt /root/certificates```
+   * ```chmod 400 /root/certificates/idp-key-server.key```
+   * ```chmod 644 /root/certificates/idp-cert-server.crt```
+   * ```chmod 644 /root/certificates/DigiCertCA.crt```
 
-    **!!!ATTENTION!!!**: Replace `idp.example.org` with your IdP Full Qualified Domain Name and `<HOSTNAME>` with the IdP hostname
+   (OPTIONAL) Create a Certificate and a Key self-signed for HTTPS if you don't have the official ones provided by DigiCert:
+   * ```openssl req -x509 -newkey rsa:4096 -keyout /root/certificates/idp-key-server.key -out /root/certificates/idp-cert-server.crt -nodes -days 1095```
 
-    -   ``` text
-        echo "<YOUR-SERVER-IP-ADDRESS> idp.example.org <HOSTNAME>" >> /etc/hosts
-        ```
-
-    -   ``` text
-        hostnamectl set-hostname <HOSTNAME>
-        ```
-
-4.  Set the variable `JAVA_HOME` into `/etc/profile`:
-
-    -   ``` text
-        echo 'JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64' > /etc/profile
-        ```
-
-    -   ``` text
-        source /etc/profile
-        ```
-
-    -   ``` text
-        export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
-        ```
-
-    -   ``` text
-        echo $JAVA_HOME
-        ```
+6. Configure **/etc/default/jetty**:
+   * ```update-alternatives --config java``` (copy the path without /bin/java)
+   * ```update-alternatives --config javac```
+   * ```vim /etc/default/jetty```
+  
+     ```bash
+     JETTY_HOME=/usr/local/src/jetty-src
+     JETTY_BASE=/opt/jetty
+     JETTY_USER=jetty
+     JETTY_LOGS=/var/log/jetty
+     TMPDIR=/opt/jetty/tmp
+     JAVA_OPTIONS="-Djava.awt.headless=true -XX:+DisableExplicitGC -XX:+UseParallelOldGC -Xms256m -Xmx2g -Djava.security.egd=file:/dev/./urandom -Didp.home=/opt/shibboleth-idp"
+     ```
 
 [[TOC](#table-of-contents)]
 
 ## Install Dependencies
 
 ``` text
-sudo apt install fail2ban vim wget gnupg ca-certificates openssl ntp --no-install-recommends
+sudo dnf install java-latest-openjdk-devel wget jakarta-servlet jakarta-server-pages
 ```
 
 [[TOC](#table-of-contents)]
 
 ## Install software requirements
 
-### Install Apache Web Server
+1. Become ROOT:
+   * ```sudo su -```
 
-The Apache HTTP Server will be configured as a reverse proxy and it will be used for SSL offloading.
-
-``` text
-sudo apt install apache2
-```
-
-[[TOC](#table-of-contents)]
-
-### Install Amazon Corretto JDK
-
-1.  Become ROOT:
-
-    ``` text
-    sudo su -
-    ```
-
-2.  Download the Public Key *B04F24E3.pub* into `/tmp` dir to verify the signature file from [Amazon](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html#signature).
-
-3.  Convert Public Key into "**amazon-corretto.gpg**":
-
-    -   ``` text
-        gpg --no-default-keyring --keyring /tmp/temp-keyring.gpg --import /tmp/B04F24E3.pub
-        ```
-
-    -   ``` text
-        gpg --no-default-keyring --keyring /tmp/temp-keyring.gpg --export --output /etc/apt/keyrings/amazon-corretto.gpg
-        ```
-
-    -   ``` text
-        rm /tmp/temp-keyring.gpg /tmp/B04F24E3.pub /tmp/temp-keyring.gpg~
-        ```
-
-4.  Create an APT source list for Amazon Corretto:
-
-    -   ``` text
-        echo "deb [signed-by=/etc/apt/keyrings/amazon-corretto.gpg] https://apt.corretto.aws stable main" >> /etc/apt/sources.list.d/amazon-corretto.list
-        ```
-
-    -   ``` text
-        echo "#deb-src [signed-by=/etc/apt/keyrings/amazon-corretto.gpg] https://apt.corretto.aws stable main" >> /etc/apt/sources.list.d/amazon-corretto.list
-        ```
-
-5.  Install Amazon Corretto:
-
-    ``` text
-    apt update ; apt install -y java-17-amazon-corretto-jdk
-    ```
-
-6.  Check that Java is working:
-
-    ``` text
-    java --version
-    ```
-
-    Result: `OpenJDK Runtime Environment Corretto-<VERSION>`
+2. Install the packages required: 
+   * ```dnf install java-latest-openjdk-devel mod_ssl httpd wget jakarta-servlet jakarta-server-pages```
+  
+3. Disable SELinux:
+   * ```vim /etc/selinux/config```
+  
+     ```
+     # This file controls the state of SELinux on the system.
+     # SELINUX= can take one of these three values:
+     #       enforcing - SELinux security policy is enforced.
+     #       permissive - SELinux prints warnings instead of enforcing.
+     #       disabled - No SELinux policy is loaded.
+     SELINUX=disabled
+     ```
+   * ```reboot```
+   * ```sudo su -```
+   * check that the command ```getenforce``` returns **Disabled**.
 
 [[TOC](#table-of-contents)]
 
