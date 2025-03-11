@@ -576,25 +576,17 @@ It is a Java Web Application that can be deployed with its WAR file.
 2.  Download the Shibboleth Identity Provider v5.x.y (replace '5.x.y' with the latest version found on the [Shibboleth download site](https://shibboleth.net/downloads/identity-provider/)):
 
     -   ``` text
-        cd /usr/local/src
+        cd /opt
         ```
 
     -   ``` text
-        wget http://shibboleth.net/downloads/identity-provider/5.x.y/shibboleth-identity-provider-5.x.y.tar.gz
+        wget https://shibboleth.net/downloads/identity-provider/5.1.3/shibboleth-identity-provider-5.1.3.tar.gz
         ```
-
-    -   ``` text
-        tar -xzf shibboleth-identity-provider-5.*.tar.gz
-        ```
-
+    
 3.  Validate the package downloaded:
 
     -   ``` text
-        cd /usr/local/src
-        ```
-
-    -   ``` text
-        wget https://shibboleth.net/downloads/identity-provider/5.x.y/shibboleth-identity-provider-5.x.y.tar.gz.asc
+        wget https://shibboleth.net/downloads/identity-provider/5.1.3/shibboleth-identity-provider-5.1.3.tar.gz.asc
         ```
 
     -   ``` text
@@ -602,27 +594,35 @@ It is a Java Web Application that can be deployed with its WAR file.
         ```
 
     -   ``` text
-        gpg --import /usr/local/src/PGP_KEYS
+        gpg --import /opt/PGP_KEYS
         ```
 
     -   ``` text
-        gpg --verify /usr/local/src/shibboleth-identity-provider-5.x.y.tar.gz.asc /usr/local/src/shibboleth-identity-provider-5.x.y.tar.gz
+        gpg --verify /opt/shibboleth-identity-provider-5.1.3.tar.gz.asc /opt/shibboleth-identity-provider-5.1.3.tar.gz
         ```
 
     If the verification contains also the name of Scott Cantor the package is valid.
 
-4.  Install Identity Provider Shibboleth:
+    -   ``` text
+        tar -xzf shibboleth-identity-provider-5.1.3.tar.gz
+        ```
+
+    -   ``` text
+        cd shibboleth-identity-provider-5.1.3
+        ```
+
+5.  Install Identity Provider Shibboleth:
 
     **NOTE**
 
     According to [NSA and NIST](https://www.keylength.com/en/compare/), **RSA with 3072 bit-modulus is the minimum** to protect up to TOP SECRET over than 2030.
 
     -   ``` text
-        cd /usr/local/src/shibboleth-identity-provider-5.*/bin
+        cd /opt/shibboleth-identity-provider-5.1.3
         ```
 
     -   ``` text
-        bash install.sh --hostName $(hostname -f)
+        ./bin/install.sh --hostName $(hostname -f)
         ```
 
     **!!! ATTENTION !!!**
