@@ -329,121 +329,112 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     # ---------------------------------------
     --module=ee10-jstl
 
-# ---------------------------------------
-# Module logging-logback
-# Configures Jetty logging to use Logback Logging.
-#
-# Check ${JETTY.BASE}/modules/logging-logback.mod
-# ---------------------------------------
---module=logging-logback
+    # ---------------------------------------
+    # Module logging-logback
+    # Configures Jetty logging to use Logback Logging.
+    #
+    # Check ${JETTY.BASE}/modules/logging-logback.mod
+    # ---------------------------------------
+    --module=logging-logback
 
+    # ---------------------------------------
+    # Module logging-jetty
+    # Base configuration for the jetty logging mechanism.
+    # 
+    # Check ${JETTY.BASE}/modules/logging-jetty.mod
+    # ---------------------------------------
+    # --module=logging-jetty
 
-# ---------------------------------------
-# Module logging-jetty
-# Base configuration for the jetty logging mechanism.
-# 
-# Check ${JETTY.BASE}/modules/logging-jetty.mod
-# ---------------------------------------
-# --module=logging-jetty
+    # ---------------------------------------
+    # Module: plus
+    # Enables Servlet 3.1 resource injection.
+    #
+    # Check ${JETTY.BASE}/modules/plus.mod
+    # ---------------------------------------
+    --module=plus
 
+    # ---------------------------------------
+    # Module: requestlog
+    # Logs requests using CustomRequestLog and AsyncRequestLogWriter.
+    #
+    # Check ${JETTY.BASE}/modules/requestlog.mod
+    # ---------------------------------------
+    --module=requestlog
 
-# ---------------------------------------
-# Module: plus
-# Enables Servlet 3.1 resource injection.
-#
-# Check ${JETTY.BASE}/modules/plus.mod
-# ---------------------------------------
---module=plus
+    # ---------------------------------------
+    # Module: resources
+    # Adds the $JETTY_HOME/resources and/or $JETTY_BASE/resources
+    # directory to the server classpath. Useful for configuration
+    # property files (eg jetty-logging.properties)
+    #
+    # Check ${JETTY.BASE}/modules/resources.mod
+    # ---------------------------------------
+    --module=resources
 
-# ---------------------------------------
-# Module: requestlog
-# Logs requests using CustomRequestLog and AsyncRequestLogWriter.
-#
-# Check ${JETTY.BASE}/modules/requestlog.mod
-# ---------------------------------------
---module=requestlog
+    # ---------------------------------------
+    # Module: server
+    # Enables the core Jetty server on the classpath.
+    # 
+    # Check ${JETTY.BASE}/modules/server.mod
+    # ---------------------------------------
+    --module=server
 
+    # ---------------------------------------
+    # Module: servlets
+    # Adds Jetty utility servlets and filters available to a webapp.
+    #
+    # Check ${JETTY.BASE}/modules/servlets.mod
+    # ---------------------------------------
+    --module=ee10-servlets
 
-# ---------------------------------------
-# Module: resources
-# Adds the $JETTY_HOME/resources and/or $JETTY_BASE/resources
-# directory to the server classpath. Useful for configuration
-# property files (eg jetty-logging.properties)
-#
-# Check ${JETTY.BASE}/modules/resources.mod
-# ---------------------------------------
---module=resources
+    # ---------------------------------------
+    # Module: threadpool
+    # Enables and configures the Server ThreadPool.
+    #
+    # Check ${JETTY.BASE}/modules/threadpool.mod
+    # ---------------------------------------
+    --module=threadpool
 
+    # ---------------------------------------
+    # Module: websocket
+    # Enable both jetty and jakarta websocket jetty modules for deployed web applications.
+    #
+    # Check ${JETTY.BASE}/modules/websocket.mod
+    # ---------------------------------------
+    --module=ee10-websocket-jetty
 
+    # Allows setting Java system properties (-Dname=value)
+    # and JVM flags (-X, -XX) in this file
+    # NOTE: spawns child Java process
+    --exec
 
-# ---------------------------------------
-# Module: server
-# Enables the core Jetty server on the classpath.
-# 
-# Check ${JETTY.BASE}/modules/server.mod
-# ---------------------------------------
---module=server
+    # Disable Explicit Garbage Collection
+    -XX:+DisableExplicitGC
 
+    # Enable the parallel collector
+    -XX:+UseParallelGC
 
-# ---------------------------------------
-# Module: servlets
-# Adds Jetty utility servlets and filters available to a webapp.
-#
-# Check ${JETTY.BASE}/modules/servlets.mod
-# ---------------------------------------
---module=ee10-servlets
+    # Maximum amount of memory that Jetty may use, at least 1.5G is recommended
+    # for handling larger (> 25M) metadata files but you will need to test on
+    # your particular metadata configuration. If MDQ metadata on demand is used,
+    # requirements may be much lower.
+    -Xmx500m
 
+    # The initial Java heap size
+    -Xms256m
 
-# ---------------------------------------
-# Module: threadpool
-# Enables and configures the Server ThreadPool.
-#
-# Check ${JETTY.BASE}/modules/threadpool.mod
-# ---------------------------------------
---module=threadpool
+    # Prevent blocking for entropy.
+    -Djava.security.egd=file:/dev/urandom
 
+    # Set Java tmp location (relative to JETTY_BASE)
+    -Djava.io.tmpdir=/opt/jetty/tmp
 
-# ---------------------------------------
-# Module: websocket
-# Enable both jetty and jakarta websocket jetty modules for deployed web applications.
-#
-# Check ${JETTY.BASE}/modules/websocket.mod
-# ---------------------------------------
---module=ee10-websocket-jetty
+    # Enable Java’s headless mode 
+    # needed to work with graphics-based applications in Java without an actual display, keyboard, or mouse
+    -Djava.awt.headless=true
 
-
-# Allows setting Java system properties (-Dname=value)
-# and JVM flags (-X, -XX) in this file
-# NOTE: spawns child Java process
---exec
-
-# Disable Explicit Garbage Collection
--XX:+DisableExplicitGC
-
-# Enable the parallel collector
--XX:+UseParallelGC
-
-# Maximum amount of memory that Jetty may use, at least 1.5G is recommended
-# for handling larger (> 25M) metadata files but you will need to test on
-# your particular metadata configuration. If MDQ metadata on demand is used,
-# requirements may be much lower.
--Xmx500m
-
-# The initial Java heap size
--Xms256m
-
-# Prevent blocking for entropy.
--Djava.security.egd=file:/dev/urandom
-
-# Set Java tmp location (relative to JETTY_BASE)
--Djava.io.tmpdir=/opt/jetty/tmp
-
-# Enable Java’s headless mode 
-# needed to work with graphics-based applications in Java without an actual display, keyboard, or mouse
--Djava.awt.headless=true
-
-# Enable Jetty logback logging
--Dlogback.configurationFile=resources/logback.xml
+    # Enable Jetty logback logging
+    -Dlogback.configurationFile=resources/logback.xml
 
      ```
 
