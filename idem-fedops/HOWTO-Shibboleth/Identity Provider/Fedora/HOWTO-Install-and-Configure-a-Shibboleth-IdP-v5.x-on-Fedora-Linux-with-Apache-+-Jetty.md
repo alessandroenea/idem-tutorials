@@ -80,6 +80,7 @@
     -   size: 16x16 px (or other that respect the aspect-ratio)
     -   format: PNG
     -   style: with a transparent background
+-   Image: fedora-cloud-base-generic.x86_64-40-1.14.qcow2
 
 [[TOC](#table-of-contents)]
 
@@ -116,18 +117,18 @@ Please remember to **replace all occurencences** of:
         hostnamectl set-hostname <HOSTNAME>
         ```
 
-4.  Set the variable `JAVA_HOME` into `/etc/environment`:
+4.  Set the variable `JAVA_HOME` into `/etc/profile`:
 
     -   ``` text
-        echo 'JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto' > /etc/environment
+        echo 'JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64' > /etc/profile
         ```
 
     -   ``` text
-        source /etc/environment
+        source /etc/profile
         ```
 
     -   ``` text
-        export JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto
+        export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
         ```
 
     -   ``` text
