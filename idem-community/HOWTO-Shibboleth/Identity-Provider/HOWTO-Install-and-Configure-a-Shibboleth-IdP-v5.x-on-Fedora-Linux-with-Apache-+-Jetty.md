@@ -1,7 +1,5 @@
 # HOWTO Install and Configure a Shibboleth IdP v5.x on Fedora Linux with Apache + Jetty
 
-<img src="https://wiki.idem.garr.it/IDEM_Approved.png" width="120" alt="image" />
-
 ## Table of Contents
 
 1.  [Requirements](#requirements)
