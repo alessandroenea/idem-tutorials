@@ -132,15 +132,15 @@ Please remember to **replace all occurencences** of:
 6. Configure **/etc/default/jetty**:
    * ```update-alternatives --config java``` (copy the path without /bin/java)
    * ```update-alternatives --config javac```
-   * ```vim /etc/default/jetty```
+   * ```vi /etc/default/jetty```
   
      ```bash
-     JETTY_HOME=/usr/local/src/jetty-src
+     JETTY_HOME=/opt/jetty-src
      JETTY_BASE=/opt/jetty
+     JETTY_PID=/opt/jetty/jetty.pid
      JETTY_USER=jetty
-     JETTY_LOGS=/var/log/jetty
+     JETTY_START_LOG=/var/log/jetty/start.log
      TMPDIR=/opt/jetty/tmp
-     JAVA_OPTIONS="-Djava.awt.headless=true -XX:+DisableExplicitGC -XX:+UseParallelOldGC -Xms256m -Xmx2g -Djava.security.egd=file:/dev/./urandom -Didp.home=/opt/shibboleth-idp"
      ```
 
 [[TOC](#table-of-contents)]
@@ -178,7 +178,7 @@ sudo dnf install java-latest-openjdk-devel wget jakarta-servlet jakarta-server-p
 
 [[TOC](#table-of-contents)]
 
-### Install Jetty Servlet Container
+### Install Jetty 12 Servlet Container
 
 Jetty is a Web server and a Java Servlet container. It will be used to run the IdP application through its WAR file.
 
@@ -191,33 +191,33 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
 2.  Download and Extract Jetty:
 
     -   ``` text
-        cd /usr/local/src
+        cd /opt
         ```
 
     -   ``` text
-        wget https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/11.0.19/jetty-home-11.0.19.tar.gz
+        wget https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.14/jetty-home-12.0.14.tar.gz
         ```
 
     -   ``` text
-        tar xzvf jetty-home-11.0.19.tar.gz
+        tar xzvf jetty-home-12.0.14.tar.gz
         ```
 
 3.  Create the `jetty-src` folder as a symbolic link. It will be useful for future Jetty updates:
 
     ``` text
-    ln -nsf jetty-home-11.0.19 jetty-src
+    ln -s jetty-home-12.0.14 jetty-src
     ```
 
 4.  Create the system user `jetty` that can run the web server (without home directory):
 
     ``` text
-    useradd -r -M jetty
+    useradd -r -m jetty
     ```
 
 5.  Create your custom Jetty configuration that overrides the default one and will survive upgrades:
 
     -   ``` text
-        mkdir -p /opt/jetty
+        mkdir /opt/jetty
         ```
 
     -   ``` text
@@ -233,7 +233,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
         ```
 
     -   ``` text
-        chown -R jetty:jetty /opt/jetty /usr/local/src/jetty-src
+        chown -R jetty:jetty /opt/jetty /opt/jetty-src
         ```
 
 7.  Create the Jetty Logs' folders:
@@ -243,11 +243,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
         ```
 
     -   ``` text
-        mkdir /opt/jetty/logs
-        ```
-
-    -   ``` text
-        chown jetty:jetty /var/log/jetty /opt/jetty/logs
+        chown jetty:jetty /var/log/jetty
         ```
 
 8. Configure **/etc/default/jetty**:
@@ -266,33 +262,18 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
 9. Create the service loadable from command line:
 
     -   ``` text
-        cd /etc/init.d
+        cp /opt/jetty-src/bin/jetty.service /etc/systemd/system/jetty.service
         ```
 
     -   ``` text
-        ln -s /usr/local/src/jetty-src/bin/jetty.sh jetty
+        change section [Service] with:
+        Type=simple
+        User=jetty
+        Group=jetty
+        ExecStart=/usr/bin/java -jar /opt/jetty-src/start.jar jetty.home=/opt/jetty-src jetty.base=/opt/jetty jetty.http.port=8080
+        ExecStop=/bin/kill ${MAINPID}
+        SuccessExitStatus=143
         ```
-
-    -   ``` text
-        sudo update-alternatives --config editor
-        ```
-
-        (select `/usr/bin/vim.basic` or what do you prefer as editor)
-
-
-    -   ``` text
-        cp /usr/local/src/jetty-src/bin/jetty.service /etc/systemd/system/jetty.service
-        ```
-
-    -   Fix the `PIDFile` parameter with the `JETTY_PID` path:
-
-        -   ``` text
-            systemctl edit --full jetty.service
-            ```
-
-            ``` text
-            PIDFile=/opt/jetty/jetty.pid
-            ```
 
     -   ``` text
         systemctl daemon-reload
@@ -305,40 +286,54 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
 10. Install Servlet Jakarta API 5.0.0:
 
     -   ``` text
-        apt install libjakarta-servlet-api-java
+        dnf install jakarta-server-pages.noarch jakarta-server-pages-api.noarch
         ```
 
-11. Install & configure LogBack for all Jetty logging:
+11. Install & configure severy Jetty modules:
 
     -   ```text
         cd /opt/jetty
         ```
 
     -   ``` text
-        java -jar /usr/local/src/jetty-src/start.jar --add-module=logging-logback
+        java -jar $JETTY_HOME/start.jar --create-startd --add-modules=server,http,ext
         ```
 
     -   ``` text
-        mkdir /opt/jetty/etc
+        systemctl start jetty
         ```
 
     -   ``` text
-        mkdir /opt/jetty/resources
+        java -jar $JETTY_HOME/start.jar --create-startd --add-modules=home-base-warning,console-capture
         ```
 
     -   ``` text
-        wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/jetty-requestlog.xml" -O /opt/jetty/etc/jetty-requestlog.xml
+        vi start.d/console-capture.ini
+
+        Set line:
+        jetty.console-capture.dir=/var/log/jetty
+        ```
+
+    -   ``` text
+        systemctl restart jetty
+        ```
+
+    -   ``` text
+        java -jar $JETTY_HOME/start.jar --create-startd --add-modules=ee10-deploy,ee10-websocket-jakarta,ee10-websocket-jetty,ee10-servlets,ee10-annotations,ee10-jstl,threadpool,requestlog,ee10-plus,http-forwarded,logging-logback
+        ```
+
+    -   ``` text
+        systemctl restart jetty
         ```
 
     -   ``` text
         wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/jetty-logging.properties" -O /opt/jetty/resources/jetty-logging.properties
         ```
 
-12. Check if all settings are OK:
+13. Check if all settings are OK:
 
-    -   `service jetty check` (Jetty NOT running)
-    -   `service jetty start`
-    -   `service jetty check` (Jetty running pid=XXXX)
+    -   `systemctl check jetty`
+    -   `systemctl status jetty`
 
     If you receive an error likes "*Job for jetty.service failed because the control process exited with error code. See "systemctl status jetty.service" and "journalctl -xe" for details.*", try this:
 
