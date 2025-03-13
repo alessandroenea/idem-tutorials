@@ -479,6 +479,11 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
 
 9. Configure **/etc/default/jetty**:
 
+    ``` text
+    update-alternatives --config java
+    ```
+    type: 2
+   
     ``` bash
     bash -c 'cat > /etc/default/jetty <<EOF
     JETTY_HOME=/opt/jetty-src
@@ -490,7 +495,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     EOF'
     ```
 
-10. Create the service loadable from command line:
+11. Create the service loadable from command line:
 
     ``` text
     cp /opt/jetty-src/bin/jetty.service /etc/systemd/system/jetty.service
@@ -537,28 +542,30 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
 
     ``` text
     vi start.d/console-capture.ini
-
-        Set line:
+    ```
+    Set line:
+    
+    ``` text
         jetty.console-capture.dir=/var/log/jetty
-        ```
+    ```
 
-    -   ``` text
+    ``` text
         systemctl restart jetty
-        ```
+    ```
 
-    -   ``` text
+    ``` text
         java -jar $JETTY_HOME/start.jar --create-startd --add-modules=ee10-deploy,ee10-websocket-jakarta,ee10-websocket-jetty,ee10-servlets,ee10-annotations,ee10-jstl,threadpool,requestlog,ee10-plus,http-forwarded,logging-logback
-        ```
+    ```
 
-    -   ``` text
+    ``` text
         systemctl restart jetty
-        ```
+    ```
 
-    -   ``` text
+    ``` text
         wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/jetty-logging.properties" -O /opt/jetty/resources/jetty-logging.properties
-        ```
+    ```
 
-13. Check if all settings are OK:
+14. Check if all settings are OK:
 
     -   `systemctl check jetty`
     -   `systemctl status jetty`
