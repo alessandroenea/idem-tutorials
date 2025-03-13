@@ -155,20 +155,6 @@ Please remember to **replace all occurencences** of:
    (OPTIONAL) Create a Certificate and a Key self-signed for HTTPS if you don't have the official ones provided by DigiCert:
     ```openssl req -x509 -newkey rsa:4096 -keyout /root/certificates/idp-key-server.key -out /root/certificates/idp-cert-server.crt -nodes -days 1095```
 
-7. Configure **/etc/default/jetty**:
-    ``` text
-   vi /etc/default/jetty
-    ```
-  
-     ```bash
-     JETTY_HOME=/opt/jetty-src
-     JETTY_BASE=/opt/jetty
-     JETTY_PID=/opt/jetty/jetty.pid
-     JETTY_USER=jetty
-     JETTY_START_LOG=/var/log/jetty/start.log
-     TMPDIR=/opt/jetty/tmp
-     ```
-
 [[TOC](#table-of-contents)]
 
 ## Install software requirements
@@ -185,7 +171,9 @@ Please remember to **replace all occurencences** of:
     ```
   
 4. Disable SELinux:
-   * ```vi /etc/selinux/config```
+   * ``` text
+     vi /etc/selinux/config
+     ```
   
      ```
      # This file controls the state of SELinux on the system.
@@ -213,17 +201,17 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
 
 2.  Download and Extract Jetty:
 
-    -   ``` text
-        cd /opt
-        ```
+    ``` text
+    cd /opt
+    ```
 
-    -   ``` text
-        wget https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.14/jetty-home-12.0.14.tar.gz
-        ```
+    ``` text
+    wget https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.14/jetty-home-12.0.14.tar.gz
+    ```
 
-    -   ``` text
-        tar xzvf jetty-home-12.0.14.tar.gz
-        ```
+    ``` text
+    tar xzvf jetty-home-12.0.14.tar.gz
+    ```
 
 3.  Create the `jetty-src` folder as a symbolic link. It will be useful for future Jetty updates:
 
@@ -236,20 +224,18 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     ``` text
     useradd -r -m jetty
     ```
+    (ignore the message: "useradd: failed to reset the lastlog entry of ...")
 
 5.  Create your custom Jetty configuration that overrides the default one and will survive upgrades:
 
-    -   ``` text
-        mkdir /opt/jetty
-        ```
+    ``` text
+    mkdir /opt/jetty
+    ```
 
-    -   ``` text
-        wget https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/start.ini -O /opt/jetty/start.ini
-        ```
-
-        (the `start.ini` provided is adapted to be used with [IDEM MDX](https://mdx.idem.garr.it/) service)
-
-    - ```vi /opt/jetty/start.ini```
+     ``` text
+    vi /opt/jetty/start.ini
+     ```
+    (the `start.ini` provided is adapted to be used with [IDEM MDX](https://mdx.idem.garr.it/) service)
 
      ```bash
      #===========================================================
@@ -463,31 +449,31 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
 
 
 
-6.  Create the TMPDIR directory used by Jetty:
+7.  Create the TMPDIR directory used by Jetty:
 
-    -   ``` text
-        mkdir /opt/jetty/tmp ; chown jetty:jetty /opt/jetty/tmp
-        ```
+    ``` text
+    mkdir /opt/jetty/tmp ; chown jetty:jetty /opt/jetty/tmp
+    ```
 
-    -   ``` text
-        chown -R jetty:jetty /opt/jetty /opt/jetty-src
-        ```
+    ``` text
+    chown -R jetty:jetty /opt/jetty /opt/jetty-src
+    ```
 
-7.  Create the Jetty Logs' folders:
+8.  Create the Jetty Logs' folders:
 
-    -   ``` text
-        mkdir /var/log/jetty
-        ```
+    ``` text
+    mkdir /var/log/jetty
+    ```
 
-    -   ``` text
-        chown jetty:jetty /var/log/jetty
-        ```
+    ``` text
+    chown jetty:jetty /var/log/jetty
+    ```
 
-8. Configure **/etc/default/jetty**:
+9. Configure **/etc/default/jetty**:
 
     ``` bash
     bash -c 'cat > /etc/default/jetty <<EOF
-    JETTY_HOME=/usr/local/src/jetty-src
+    JETTY_HOME=/opt/jetty-src
     JETTY_BASE=/opt/jetty
     JETTY_PID=/opt/jetty/jetty.pid
     JETTY_USER=jetty
@@ -496,56 +482,53 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     EOF'
     ```
 
-9. Create the service loadable from command line:
+10. Create the service loadable from command line:
 
-    -   ``` text
-        cp /opt/jetty-src/bin/jetty.service /etc/systemd/system/jetty.service
-        ```
+    ``` text
+    cp /opt/jetty-src/bin/jetty.service /etc/systemd/system/jetty.service
+    ```
 
-    -   ``` text
-        change section [Service] with:
-        Type=simple
-        User=jetty
-        Group=jetty
-        ExecStart=/usr/bin/java -jar /opt/jetty-src/start.jar jetty.home=/opt/jetty-src jetty.base=/opt/jetty jetty.http.port=8080
-        ExecStop=/bin/kill ${MAINPID}
-        SuccessExitStatus=143
-        ```
+    ``` text
+    vi /etc/systemd/system/jetty.service
+    ```
+    change section [Service] with:
+    ``` text  
+    Type=simple
+    User=jetty
+    Group=jetty
+    ExecStart=/usr/bin/java -jar /opt/jetty-src/start.jar jetty.home=/opt/jetty-src jetty.base=/opt/jetty jetty.http.port=8080
+    ExecStop=/bin/kill ${MAINPID}
+    SuccessExitStatus=143
+    ```
 
-    -   ``` text
-        systemctl daemon-reload
-        ```
+    ``` text
+    systemctl daemon-reload
+    ```
 
-    -   ``` text
-        systemctl enable jetty.service
-        ```
+    ``` text
+    systemctl enable jetty.service
+    ```
 
-10. Install Servlet Jakarta API 5.0.0:
+12. Install & configure several Jetty modules:
 
-    -   ``` text
-        dnf install jakarta-server-pages.noarch jakarta-server-pages-api.noarch
-        ```
+    ```text
+    cd /opt/jetty
+    ```
 
-11. Install & configure severy Jetty modules:
+    ``` text
+    java -jar $JETTY_HOME/start.jar --create-startd --add-modules=server,http,ext
+    ```
 
-    -   ```text
-        cd /opt/jetty
-        ```
+    ``` text
+    systemctl start jetty
+    ```
 
-    -   ``` text
-        java -jar $JETTY_HOME/start.jar --create-startd --add-modules=server,http,ext
-        ```
+    ``` text
+    java -jar $JETTY_HOME/start.jar --create-startd --add-modules=home-base-warning,console-capture
+    ```
 
-    -   ``` text
-        systemctl start jetty
-        ```
-
-    -   ``` text
-        java -jar $JETTY_HOME/start.jar --create-startd --add-modules=home-base-warning,console-capture
-        ```
-
-    -   ``` text
-        vi start.d/console-capture.ini
+    ``` text
+    vi start.d/console-capture.ini
 
         Set line:
         jetty.console-capture.dir=/var/log/jetty
