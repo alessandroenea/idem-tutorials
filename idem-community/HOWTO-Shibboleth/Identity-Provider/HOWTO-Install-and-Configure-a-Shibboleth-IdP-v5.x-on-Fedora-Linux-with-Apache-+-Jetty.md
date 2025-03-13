@@ -112,29 +112,14 @@ Please remember to **replace all occurencences** of:
     ```
 
      ```bash
-     JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
-     IDP_HOME=/opt/shibboleth-idp
-     IDP_SRC=/opt/shibboleth-idp-5.1.3
-     JETTY_HOME=/opt/jetty-src
-     JETTY_BASE=/opt/jetty
+     export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
+     export IDP_HOME=/opt/shibboleth-idp
+     export IDP_SRC=/opt/shibboleth-idp-5.1.3
+     export JETTY_HOME=/opt/jetty-src
+     export JETTY_BASE=/opt/jetty
      ```
      ``` text
      source /etc/profile
-     ```
-     ``` text
-     export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
-     ```
-     ``` text
-     export IDP_HOME=/opt/shibboleth-idp
-     ```
-     ``` text
-     export IDP_SRC=/opt/shibboleth-idp-5.1.3
-     ```
-     ``` text
-     export JETTY_HOME=/opt/jetty-src
-     ```
-     ``` text
-     export JETTY_BASE=/opt/jetty
      ```
   
 5. Move the Certificate and the Key file for HTTPS server from ```/tmp/``` to ```/root/certificates```:
@@ -179,9 +164,9 @@ Please remember to **replace all occurencences** of:
     ```
   
 4. Disable SELinux:
-   * ``` text
+    ``` text
      vi /etc/selinux/config
-     ```
+    ```
   
      ```
      # This file controls the state of SELinux on the system.
@@ -191,9 +176,13 @@ Please remember to **replace all occurencences** of:
      #       disabled - No SELinux policy is loaded.
      SELINUX=disabled
      ```
-   * ```reboot```
-   * ```sudo su -```
-   * check that the command ```getenforce``` returns **Disabled**.
+   ``` text
+   reboot
+   ```
+   ``` text
+   sudo su -
+   ```
+   check that the command ```getenforce``` returns **Disabled**.
 
 [[TOC](#table-of-contents)]
 
@@ -543,32 +532,33 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     ``` text
     vi start.d/console-capture.ini
     ```
-    Set line:
+    Set line: jetty.console-capture.dir=/var/log/jetty
     
     ``` text
-        jetty.console-capture.dir=/var/log/jetty
+    systemctl restart jetty
     ```
 
     ``` text
-        systemctl restart jetty
+    java -jar $JETTY_HOME/start.jar --create-startd --add-modules=ee10-deploy,ee10-websocket-jakarta,ee10-websocket-jetty,ee10-servlets,ee10-annotations,ee10-jstl,threadpool,requestlog,ee10-plus,http-forwarded,logging-logback
     ```
 
     ``` text
-        java -jar $JETTY_HOME/start.jar --create-startd --add-modules=ee10-deploy,ee10-websocket-jakarta,ee10-websocket-jetty,ee10-servlets,ee10-annotations,ee10-jstl,threadpool,requestlog,ee10-plus,http-forwarded,logging-logback
+    systemctl restart jetty
     ```
 
     ``` text
-        systemctl restart jetty
-    ```
-
-    ``` text
-        wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/jetty-logging.properties" -O /opt/jetty/resources/jetty-logging.properties
+    wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/jetty-logging.properties" -O /opt/jetty/resources/jetty-logging.properties
     ```
 
 14. Check if all settings are OK:
 
-    -   `systemctl check jetty`
-    -   `systemctl status jetty`
+    ``` text
+    systemctl check jetty
+    ```
+
+    ``` text
+    systemctl status jetty
+    ```
 
     If you receive an error likes "*Job for jetty.service failed because the control process exited with error code. See "systemctl status jetty.service" and "journalctl -xe" for details.*", try this:
 
