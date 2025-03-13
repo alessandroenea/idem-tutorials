@@ -106,7 +106,7 @@ Please remember to **replace all occurencences** of:
 
 2. Be sure that your firewall **doesn't block** the traffic on port **443** (or you can't access to your IdP)
 
-3. Define the costant ```JAVA_HOME```, ```IDP_HOME``` and ```IDP_SRC``` inside ```/etc/profile```:
+3. Define the costant ```JAVA_HOME```, ```IDP_HOME```, ```IDP_SRC```,  ```JETTY_HOME``` and ```JETTY_BASE```  inside ```/etc/profile```:
     ``` text
     vi /etc/profile
     ```
@@ -115,6 +115,8 @@ Please remember to **replace all occurencences** of:
      JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
      IDP_HOME=/opt/shibboleth-idp
      IDP_SRC=/opt/shibboleth-idp-5.1.3
+     JETTY_HOME=/opt/jetty-src
+     JETTY_BASE=/opt/jetty
      ```
      ``` text
      source /etc/profile
@@ -127,6 +129,12 @@ Please remember to **replace all occurencences** of:
      ```
      ``` text
      export IDP_SRC=/opt/shibboleth-idp-5.1.3
+     ```
+     ``` text
+     export JETTY_HOME=/opt/jetty-src
+     ```
+     ``` text
+     export JETTY_BASE=/opt/jetty
      ```
   
 5. Move the Certificate and the Key file for HTTPS server from ```/tmp/``` to ```/root/certificates```:
