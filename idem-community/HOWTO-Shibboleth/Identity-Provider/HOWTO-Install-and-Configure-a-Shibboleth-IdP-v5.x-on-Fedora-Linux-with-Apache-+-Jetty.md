@@ -95,7 +95,9 @@ Please remember to **replace all occurencences** of:
 ## Configure the environment
 
 1. Modify your ```/etc/hosts```:
-   * ```vim /etc/hosts```
+     ``` text
+     vi /etc/hosts
+     ```
   
      ```bash
      127.0.1.1 idp.example.org idp
@@ -105,34 +107,58 @@ Please remember to **replace all occurencences** of:
 2. Be sure that your firewall **doesn't block** the traffic on port **443** (or you can't access to your IdP)
 
 3. Define the costant ```JAVA_HOME```, ```IDP_HOME``` and ```IDP_SRC``` inside ```/etc/profile```:
-   * ```vi /etc/profile```
+    ``` text
+    vi /etc/profile
+    ```
 
      ```bash
      JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
      IDP_HOME=/opt/shibboleth-idp
      IDP_SRC=/opt/shibboleth-idp-5.1.3
      ```
-   * ```source /etc/profile```
-   * ```export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64```
-   * ```export IDP_HOME=/opt/shibboleth-idp```
-   * ```export IDP_SRC=/opt/shibboleth-idp-5.1.3```
+     ``` text
+     source /etc/profile
+     ```
+     ``` text
+     export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.37-1.rolling.fc40.x86_64
+     ```
+     ``` text
+     export IDP_HOME=/opt/shibboleth-idp
+     ```
+     ``` text
+     export IDP_SRC=/opt/shibboleth-idp-5.1.3
+     ```
   
 5. Move the Certificate and the Key file for HTTPS server from ```/tmp/``` to ```/root/certificates```:
-   * ```mkdir /root/certificates```
-   * ```mv /tmp/idp-cert-server.crt /root/certificates```
-   * ```mv /tmp/idp-key-server.key /root/certificates```
-   * ```mv /tmp/DigiCertCA.crt /root/certificates```
-   * ```chmod 400 /root/certificates/idp-key-server.key```
-   * ```chmod 644 /root/certificates/idp-cert-server.crt```
-   * ```chmod 644 /root/certificates/DigiCertCA.crt```
+    ``` text
+   mkdir /root/certificates
+    ```
+    ``` text
+   mv /tmp/idp-cert-server.crt /root/certificates
+    ```
+    ``` text
+   mv /tmp/idp-key-server.key /root/certificates
+    ```
+    ``` text
+   mv /tmp/DigiCertCA.crt /root/certificates
+    ```
+    ``` text
+   chmod 400 /root/certificates/idp-key-server.key
+    ```
+    ``` text
+   chmod 644 /root/certificates/idp-cert-server.crt
+    ```
+    ``` text
+   chmod 644 /root/certificates/DigiCertCA.crt
+    ```
 
    (OPTIONAL) Create a Certificate and a Key self-signed for HTTPS if you don't have the official ones provided by DigiCert:
-   * ```openssl req -x509 -newkey rsa:4096 -keyout /root/certificates/idp-key-server.key -out /root/certificates/idp-cert-server.crt -nodes -days 1095```
+    ```openssl req -x509 -newkey rsa:4096 -keyout /root/certificates/idp-key-server.key -out /root/certificates/idp-cert-server.crt -nodes -days 1095```
 
-6. Configure **/etc/default/jetty**:
-   * ```update-alternatives --config java``` (copy the path without /bin/java)
-   * ```update-alternatives --config javac```
-   * ```vi /etc/default/jetty```
+7. Configure **/etc/default/jetty**:
+    ``` text
+   vi /etc/default/jetty
+    ```
   
      ```bash
      JETTY_HOME=/opt/jetty-src
@@ -145,24 +171,21 @@ Please remember to **replace all occurencences** of:
 
 [[TOC](#table-of-contents)]
 
-## Install Dependencies
-
-``` text
-sudo dnf install java-latest-openjdk-devel wget jakarta-servlet jakarta-server-pages
-```
-
-[[TOC](#table-of-contents)]
-
 ## Install software requirements
 
 1. Become ROOT:
-   * ```sudo su -```
+   ``` text
+   sudo su -
+   ```
 
-2. Install the packages required: 
-   * ```dnf install java-latest-openjdk-devel mod_ssl httpd wget jakarta-servlet jakarta-server-pages```
+3. Install the packages required:
+
+    ``` text
+    dnf install java-latest-openjdk-devel mod_ssl httpd wget jakarta-servlet jakarta-server-pages
+    ```
   
-3. Disable SELinux:
-   * ```vim /etc/selinux/config```
+4. Disable SELinux:
+   * ```vi /etc/selinux/config```
   
      ```
      # This file controls the state of SELinux on the system.
@@ -799,7 +822,7 @@ The Apache HTTP Server will be configured as a reverse proxy and it will be used
 3.  Edit the Virtualhost file (**PLEASE PAY ATTENTION! you need to edit this file and customize it, check the initial comment of the file**):
 
     ``` text
-    vim /etc/apache2/sites-available/$(hostname -f).conf
+    vi /etc/apache2/sites-available/$(hostname -f).conf
     ```
 
 4.  Enable the Apache2 virtual hosts created:
@@ -896,7 +919,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
 6.  (OPTIONAL) MySQL DB Access without password:
 
     ``` text
-    vim /root/.my.cnf
+    vi /root/.my.cnf
     ```
 
     ``` text
@@ -946,7 +969,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
 9.  Configure JDBC Storage Service:
 
     ``` text
-    vim /opt/shibboleth-idp/conf/global.xml
+    vi /opt/shibboleth-idp/conf/global.xml
     ```
 
     and add the following directives to the tail, before the last `</beans>` tag:
@@ -976,7 +999,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
 10. Set the consent storage service to the JDBC storage service:
 
     * ``` text
-      vim /opt/shibboleth-idp/conf/idp.properties
+      vi /opt/shibboleth-idp/conf/idp.properties
       ```
 
       ``` text
@@ -1038,7 +1061,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
         -   Configure `secrets.properties`:
 
             ``` text
-            vim /opt/shibboleth-idp/credentials/secrets.properties
+            vi /opt/shibboleth-idp/credentials/secrets.properties
             ```
 
             ``` xml+jinja
@@ -1057,7 +1080,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
             The list MUST contain the attribute chosen for the persistent-id generation (**idp.persistentId.sourceAttribute**).
 
             ``` text
-            vim /opt/shibboleth-idp/conf/ldap.properties
+            vi /opt/shibboleth-idp/conf/ldap.properties
             ```
 
             ``` xml+jinja
@@ -1121,7 +1144,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
         -   Configure `secrets.properties`:
 
             ``` text
-            vim /opt/shibboleth-idp/credentials/secrets.properties
+            vi /opt/shibboleth-idp/credentials/secrets.properties
             ```
 
             ``` xml+jinja
@@ -1140,7 +1163,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
             The list MUST contain the attribute chosen for the persistent-id generation (**idp.persistentId.sourceAttribute**).
 
             ``` text
-            vim /opt/shibboleth-idp/conf/ldap.properties
+            vi /opt/shibboleth-idp/conf/ldap.properties
             ```
 
             ``` xml+jinja
@@ -1196,7 +1219,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
         -   Configure `secrets.properties`:
 
             ``` text
-            vim /opt/shibboleth-idp/credentials/secrets.properties
+            vi /opt/shibboleth-idp/credentials/secrets.properties
             ```
 
             ``` xml+jinja
@@ -1215,7 +1238,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
             The list MUST contain the attribute chosen for the persistent-id generation (**idp.persistentId.sourceAttribute**).
 
             ``` text
-            vim /opt/shibboleth-idp/conf/ldap.properties
+            vi /opt/shibboleth-idp/conf/ldap.properties
             ```
 
             ``` xml+jinja
@@ -1289,7 +1312,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
         -   Configure `secrets.properties`:
 
             ``` text
-            vim /opt/shibboleth-idp/credentials/secrets.properties
+            vi /opt/shibboleth-idp/credentials/secrets.properties
             ```
 
             ``` xml+jinja
@@ -1308,7 +1331,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
             The list MUST contain the attribute chosen for the persistent-id generation (**idp.persistentId.sourceAttribute**).
 
             ``` text
-            vim /opt/shibboleth-idp/conf/ldap.properties
+            vi /opt/shibboleth-idp/conf/ldap.properties
             ```
 
             ``` xml+jinja
@@ -1364,7 +1387,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
         -   Configure `secrets.properties`:
 
             ``` text
-            vim /opt/shibboleth-idp/credentials/secrets.properties
+            vi /opt/shibboleth-idp/credentials/secrets.properties
             ```
 
             ``` xml+jinja
@@ -1383,7 +1406,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
             The list MUST contain the attribute chosen for the persistent-id generation (**idp.persistentId.sourceAttribute**).
 
             ``` text
-            vim /opt/shibboleth-idp/conf/ldap.properties
+            vi /opt/shibboleth-idp/conf/ldap.properties
             ```
 
             ``` xml+jinja
@@ -1439,7 +1462,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
         -   Configure `secrets.properties`:
 
             ``` text
-            vim /opt/shibboleth-idp/credentials/secrets.properties
+            vi /opt/shibboleth-idp/credentials/secrets.properties
             ```
 
             ``` xml+jinja
@@ -1458,7 +1481,7 @@ This Storage service will memorize User Consent data on a persistent SQL databas
             The list MUST contain the attribute chosen for the persistent-id generation (**idp.persistentId.sourceAttribute**).
 
             ``` text
-            vim /opt/shibboleth-idp/conf/ldap.properties
+            vi /opt/shibboleth-idp/conf/ldap.properties
             ```
 
             ``` xml+jinja
@@ -1521,7 +1544,7 @@ By default, a transient NameID will always be released to the Service Provider i
 2.  Enable the generation of the computed `persistent-id` with:
 
     -   ``` text
-        vim /opt/shibboleth-idp/conf/saml-nameid.properties
+        vi /opt/shibboleth-idp/conf/saml-nameid.properties
         ```
 
         The *sourceAttribute* MUST be an attribute, or a list of comma-separated attributes, that uniquely identify the subject of the generated `persistent-id`.
@@ -1539,7 +1562,7 @@ By default, a transient NameID will always be released to the Service Provider i
         ```
 
     -   ``` text
-        vim /opt/shibboleth-idp/conf/saml-nameid.xml
+        vi /opt/shibboleth-idp/conf/saml-nameid.xml
         ```
 
         Uncomment the line:
@@ -1549,7 +1572,7 @@ By default, a transient NameID will always be released to the Service Provider i
         ```
 
     -   ``` xml+jinja
-        vim /opt/shibboleth-idp/credentials/secrets.properties
+        vi /opt/shibboleth-idp/credentials/secrets.properties
         ```
 
         ``` xml+jinja
@@ -1607,7 +1630,7 @@ By default, a transient NameID will always be released to the Service Provider i
 6.  (OPTIONAL) MySQL DB Access without password:
 
     ``` text
-    vim /root/.my.cnf
+    vi /root/.my.cnf
     ```
 
     ``` text
@@ -1657,7 +1680,7 @@ By default, a transient NameID will always be released to the Service Provider i
 9.  Configure JDBC Storage Service:
 
     ``` text
-    vim /opt/shibboleth-idp/conf/global.xml
+    vi /opt/shibboleth-idp/conf/global.xml
     ```
 
     and add the following directives to the tail, before the last `</beans>` tag:
@@ -1684,7 +1707,7 @@ By default, a transient NameID will always be released to the Service Provider i
 10. Enable the generation of the `persistent-id`:
 
     -   ``` text
-        vim /opt/shibboleth-idp/conf/saml-nameid.properties
+        vi /opt/shibboleth-idp/conf/saml-nameid.properties
         ```
 
         The *sourceAttribute* MUST be an attribute, or a list of comma-separated attributes, that uniquely identify the subject of the generated `persistent-id`.
@@ -1707,7 +1730,7 @@ By default, a transient NameID will always be released to the Service Provider i
         ```
 
     -   ``` text
-        vim /opt/shibboleth-idp/credentials/secrets.properties
+        vi /opt/shibboleth-idp/credentials/secrets.properties
         ```
 
         ``` text
@@ -1717,7 +1740,7 @@ By default, a transient NameID will always be released to the Service Provider i
     -   Enable the **SAML2PersistentGenerator**:
 
         -   ``` text
-            vim /opt/shibboleth-idp/conf/saml-nameid.xml
+            vi /opt/shibboleth-idp/conf/saml-nameid.xml
             ```
 
             Uncomment the line:
@@ -1727,7 +1750,7 @@ By default, a transient NameID will always be released to the Service Provider i
             ```
 
         -   ``` text
-            vim /opt/shibboleth-idp/conf/c14n/subject-c14n.xml
+            vi /opt/shibboleth-idp/conf/c14n/subject-c14n.xml
             ```
 
             Uncomment the line:
@@ -1739,7 +1762,7 @@ By default, a transient NameID will always be released to the Service Provider i
         -   (OPTIONAL) Transform each letter of username, before storing in into the database, to Lowercase or Uppercase by setting the proper constant:
 
             ``` text
-            vim /opt/shibboleth-idp/conf/c14n/subject-c14n.properties
+            vi /opt/shibboleth-idp/conf/c14n/subject-c14n.properties
             ```
 
             ``` xml+jinja
@@ -1827,7 +1850,7 @@ To be able to follow these steps, you need to have followed the previous steps o
 2.  Check to have the following `<AttributeDefinition>` and the `<DataConnector>` into the `attribute-resolver.xml`:
 
     ``` text
-    vim /opt/shibboleth-idp/conf/attribute-resolver.xml
+    vi /opt/shibboleth-idp/conf/attribute-resolver.xml
     ```
 
     ``` xml+jinja
@@ -1899,7 +1922,7 @@ To be able to follow these steps, you need to have followed the previous steps o
     `<DataConnector>` into the `attribute-resolver.xml`:
 
     ``` text
-    vim /opt/shibboleth-idp/conf/attribute-resolver.xml`
+    vi /opt/shibboleth-idp/conf/attribute-resolver.xml`
     ```
 
     ``` xml+jinja
@@ -2033,7 +2056,7 @@ Translate the IdP messages in your language:
     -   Modify `messages.properties`:
 
         ``` text
-        vim messages/messages.properties
+        vi messages/messages.properties
         ```
 
         ``` text
@@ -2046,7 +2069,7 @@ Translate the IdP messages in your language:
     -   Modify `messages_it.properties`:
 
         ``` text
-        vim messages/messages_it.properties
+        vi messages/messages_it.properties
         ```
 
         ``` text
@@ -2077,7 +2100,7 @@ Change the content of `idp.footer` variable into all `messages*.properties` file
     ```
 
 -   ``` text
-    vim messages/messages.properties
+    vi messages/messages.properties
     ```
 
     ``` xml+jinja
@@ -2085,7 +2108,7 @@ Change the content of `idp.footer` variable into all `messages*.properties` file
     ```
 
 -   ``` text
-    vim messages/messages_it.properties:
+    vi messages/messages_it.properties:
     ```
 
     ``` xml+jinja
@@ -2107,7 +2130,7 @@ Change the content of `idp.url.password.reset` and `idp.url.helpdesk` variables 
 -   Modify `messages.properties`:
 
     ``` text
-    vim messages/messages.properties
+    vi messages/messages.properties
     ```
 
     ``` xml+jinja
@@ -2118,7 +2141,7 @@ Change the content of `idp.url.password.reset` and `idp.url.helpdesk` variables 
 -   Modify `messages_it.properties`:
 
     ``` text
-    vim messages/messages_it.properties
+    vi messages/messages_it.properties
     ```
 
     ``` xml+jinja
@@ -2135,7 +2158,7 @@ Change the content of `idp.url.password.reset` and `idp.url.helpdesk` variables 
 1.  Modify the IdP metadata as follow:
 
     ``` text
-    vim /opt/shibboleth-idp/metadata/idp-metadata.xml
+    vi /opt/shibboleth-idp/metadata/idp-metadata.xml
     ```
 
     1.  Remove completely the initial default comment
@@ -2196,7 +2219,7 @@ These instructions will regularly update the secret key (and increase its versio
 5.  Create the CRON script to run it:
 
     ``` text
-    sudo vim /etc/cron.daily/updateIDPsecrets
+    sudo vi /etc/cron.daily/updateIDPsecrets
     ```
 
     ``` text
@@ -2243,7 +2266,7 @@ Follow these steps **ONLY IF** your organization is connected to the [GARR Netwo
 3.  Modify your `services.xml`:
 
     ``` text
-    vim /opt/shibboleth-idp/conf/services.xml
+    vi /opt/shibboleth-idp/conf/services.xml
     ```
 
     and add the following two beans on the top of the file, under the first `<beans>` TAG, only one time:
@@ -2401,10 +2424,10 @@ Follow this if you need to find a problem of your IdP.
     cd /opt/shibboleth-idp/logs
     ```
 
-    -   **Audit Log:** `vim idp-audit.log`
-    -   **Consent Log:** `vim idp-consent-audit.log`
-    -   **Warn Log:** `vim idp-warn.log`
-    -   **Process Log:** `vim idp-process.log`
+    -   **Audit Log:** `vi idp-audit.log`
+    -   **Consent Log:** `vi idp-consent-audit.log`
+    -   **Warn Log:** `vi idp-warn.log`
+    -   **Process Log:** `vi idp-process.log`
 
 [[TOC](#table-of-contents)]
 
@@ -2422,7 +2445,7 @@ Follow these steps **IF** your organization **IS NOT** connected to the [GARR Ne
 1.  Connect the SP to the IdP by adding its metadata on the `metadata-providers.xml` configuration file:
 
     ``` text
-    vim /opt/shibboleth-idp/conf/metadata-providers.xml
+    vi /opt/shibboleth-idp/conf/metadata-providers.xml
     ```
 
     ``` xml+jinja
