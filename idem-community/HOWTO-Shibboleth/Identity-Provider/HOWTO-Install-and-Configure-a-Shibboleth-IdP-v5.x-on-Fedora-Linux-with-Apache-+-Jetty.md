@@ -62,7 +62,7 @@
 
 -   Apache Web Server (*\>= 2.4*)
 -   Jetty 12+ Servlet Container (*implementing Servlet API 5.0 or above*)
--   OpenJDK 23.0.0.0.37-1
+-   OpenJDK 24.0.0.0.36-1
 -   OpenSSL (*\>= 3.0.2*)
 -   Shibboleth Identity Provider (*\>= 5.1.3*)
 
