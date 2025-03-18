@@ -728,9 +728,17 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
      ```
 
 3. Enable **SSL** and **headers** Apache2 modules:
-   * ```service httpd restart```
+
+   ``` text
+    systemctl enable httpd
+    ```
+   
+   ``` text
+    systemctl start httpd
+    ```
+   
   
-4. Verify the strength of your IdP's machine on:
+5. Verify the strength of your IdP's machine on:
    * [**https://www.ssllabs.com/ssltest/analyze.html**](https://www.ssllabs.com/ssltest/analyze.html)
 
 
