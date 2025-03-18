@@ -845,7 +845,7 @@ Proceed with [Configure the Directory Connection](#configure-the-directory-conne
 2.  Install useful packages:
 
     ``` text
-    apt install ldap-utils
+    dnf install openldap-clients
     ```
 
 3.  Check that you can reach the Directory from your IDP server:
