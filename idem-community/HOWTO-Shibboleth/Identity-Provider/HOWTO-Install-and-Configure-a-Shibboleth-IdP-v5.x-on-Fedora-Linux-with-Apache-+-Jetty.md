@@ -681,76 +681,58 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
 
 ## Configure Apache Web Server
 
-1.  Create the DocumentRoot:
+1. Modify the file ```/etc/httpd/conf.d/ssl.conf``` as follows:
 
-    -   ``` text
-        mkdir /var/www/html/$(hostname -f)
-        ```
+   ```apache
+   <VirtualHost _default_:443>
+     ServerName idp.example.org:443
+     ServerAdmin admin@example.org
+     DocumentRoot /var/www/html
+     ...
+     SSLEngine On
+     SSLProtocol all -SSLv3 -SSLv2 -TLSv1 -TLSv1.1
+     SSLProxyProtocol all -SSLv3 -SSLv2 -TLSv1 -TLSv1.1
 
-    -   ``` text
-        chown -R www-data: /var/www/html/$(hostname -f)
-        ```
+     SSLHonorCipherOrder on
+    
+     SSLCipherSuite "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305"
+    
+     SSLProxyCipherSuite PROFILE=SYSTEM
+       
+     # Enable HTTP Strict Transport Security with a 2 year duration
+     <IfModule headers_module>
+        Header set X-Frame-Options DENY
+        Header set Strict-Transport-Security "max-age=63072000 ; includeSubDomains ; preload"
+     </IfModule>
+     ...
+     SSLCertificateFile /root/certificates/idp-cert-server.cer
+     SSLCertificateKeyFile /root/certificates/idp-key-server.key
+     SSLCertificateChainFile /root/certificates/DigiCertCA.cer
+     ...
+   </VirtualHost>
+   ```
 
-    -   ``` text
-        echo '<h1>It Works!</h1>' > /var/www/html/$(hostname -f)/index.html
-        ```
+2. Configure Apache2 to open port **80** only for localhost:
+   * ```vim /etc/httpd/conf/httpd.conf```
 
-2.  Put SSL credentials in the right place:
+     ```apache
+     # Listen: Allows you to bind Apache to specific IP addresses and/or
+     # ports, instead of the default. See also the <VirtualHost>
+     # directive.
+     #
+     # Change this to Listen on specific IP addresses as shown below to 
+     # prevent Apache from glomming onto all bound IP addresses.
+     #
+     #Listen 12.34.56.78:80
+     Listen 127.0.0.1:80
+     ```
 
-    -   HTTPS Server Certificate (Public Key) inside `/etc/ssl/certs`
+3. Enable **SSL** and **headers** Apache2 modules:
+   * ```service httpd restart```
+  
+4. Verify the strength of your IdP's machine on:
+   * [**https://www.ssllabs.com/ssltest/analyze.html**](https://www.ssllabs.com/ssltest/analyze.html)
 
-    -   HTTPS Server Key (Private Key) inside `/etc/ssl/private`
-
-    -   Add CA Cert into `/etc/ssl/certs`
-        -   If you use GARR TCS or GEANT TCS:
-
-            -   ``` text
-                wget -O /etc/ssl/certs/GEANT_OV_RSA_CA_4.pem https://crt.sh/?d=2475254782
-                ```
-        
-            -   ``` text
-                wget -O /etc/ssl/certs/SectigoRSAOrganizationValidationSecureServerCA.crt https://crt.sh/?d=924467857
-                ```
-        
-            -   ``` text
-                cat /etc/ssl/certs/SectigoRSAOrganizationValidationSecureServerCA.crt >> /etc/ssl/certs/GEANT_OV_RSA_CA_4.pem
-                ```
-        
-            -   ``` text
-                rm /etc/ssl/certs/SectigoRSAOrganizationValidationSecureServerCA.crt
-                ```
-
-        -   If you use ACME (Let's Encrypt):
-
-            ``` text
-            ln -s /etc/letsencrypt/live/<SERVER_FQDN>/chain.pem /etc/ssl/certs/ACME-CA.pem
-            ```
-
-3.  Configure the right privileges for the SSL Certificate and Key used by HTTPS:
-
-    -   ``` text
-        chmod 400 /etc/ssl/private/$(hostname -f).key
-        ```
-
-    -   ``` text
-        chmod 644 /etc/ssl/certs/$(hostname -f).crt
-        ```
-
-    (`$(hostname -f)` will provide your IdP Full Qualified Domain Name)
-
-4.  Enable the required Apache2 modules and the virtual hosts:
-
-    -   ``` text
-        a2enmod proxy_http ssl headers alias include negotiation
-        ```
-
-    -   ``` text
-        a2dissite 000-default.conf default-ssl
-        ```
-
-    -   ``` text
-        systemctl restart apache2.service
-        ```
 
 [[TOC](#table-of-contents)]
 
