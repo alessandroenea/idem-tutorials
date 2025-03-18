@@ -165,7 +165,7 @@ Please remember to **replace all occurencences** of:
   
 4. Disable SELinux:
     ``` text
-     vi /etc/selinux/config
+    vi /etc/selinux/config
     ```
   
      ```
@@ -466,10 +466,6 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     chown jetty:jetty /var/log/jetty
     ```
 
-    ``` text
-    chown jetty:jetty /opt/jetty/logs
-    ```
-
 9. Configure **/etc/default/jetty**:
 
     ``` text
@@ -537,6 +533,10 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     vi start.d/console-capture.ini
     ```
     Set line: jetty.console-capture.dir=/var/log/jetty
+
+    ``` text
+    chown jetty:jetty /opt/jetty/logs
+    ```
     
     ``` text
     systemctl restart jetty
@@ -545,6 +545,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     ``` text
     java -jar $JETTY_HOME/start.jar --create-startd --add-modules=ee10-deploy,ee10-websocket-jakarta,ee10-websocket-jetty,ee10-servlets,ee10-annotations,ee10-jstl,threadpool,requestlog,ee10-plus,http-forwarded,logging-logback
     ```
+    Type y at request "Proceed (y/N)?"
 
     ``` text
     systemctl restart jetty
