@@ -466,6 +466,10 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     chown jetty:jetty /var/log/jetty
     ```
 
+    ``` text
+    chown jetty:jetty /opt/jetty/logs
+    ```
+
 9. Configure **/etc/default/jetty**:
 
     ``` text
