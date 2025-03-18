@@ -938,13 +938,13 @@ Proceed with [Configure the Directory Connection](#configure-the-directory-conne
         -   Restart Jetty to apply the changes:
 
             ``` text
-            service jetty restart
+            systemctl restart jetty
             ```
 
         -   Check IdP Status:
 
             ``` text
-            bash /opt/shibboleth-idp/bin/status.sh
+            bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
             ```
 
         -   Proceed with [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
@@ -1013,13 +1013,13 @@ Proceed with [Configure the Directory Connection](#configure-the-directory-conne
         -   Restart Jetty to apply the changes:
 
             ``` text
-            service jetty restart
+            systemctl restart jetty
             ```
 
         -   Check IdP Status:
 
             ``` text
-            bash /opt/shibboleth-idp/bin/status.sh
+            bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
             ```
 
         -   Proceed with [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
@@ -1078,13 +1078,13 @@ Proceed with [Configure the Directory Connection](#configure-the-directory-conne
         -   Restart Jetty to apply the changes:
 
             ``` text
-            service jetty restart
+            systemctl restart jetty
             ```
 
         -   Check IdP Status:
 
             ``` text
-            bash /opt/shibboleth-idp/bin/status.sh
+            bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
             ```
 
         -   Proceed with [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
@@ -1181,13 +1181,13 @@ Proceed with [Configure the Directory Connection](#configure-the-directory-conne
         -   Restart Jetty to apply the changes:
 
             ``` text
-            service jetty restart
+            systemctl restart jetty
             ```
 
         -   Check IdP Status:
 
             ``` text
-            bash /opt/shibboleth-idp/bin/status.sh
+            bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
             ```
 
         -   Proceed with [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
@@ -1256,13 +1256,13 @@ Proceed with [Configure the Directory Connection](#configure-the-directory-conne
         -   Restart Jetty to apply the changes:
 
             ``` text
-            service jetty restart
+            systemctl restart jetty
             ```
 
         -   Check IdP Status:
 
             ``` text
-            bash /opt/shibboleth-idp/bin/status.sh
+            bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
             ```
 
         -   Proceed with [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
@@ -1321,13 +1321,13 @@ Proceed with [Configure the Directory Connection](#configure-the-directory-conne
         -   Restart Jetty to apply the changes:
 
             ``` text
-            service jetty restart
+            systemctl restart jetty
             ```
 
         -   Check IdP Status:
 
             ``` text
-            bash /opt/shibboleth-idp/bin/status.sh
+            bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
             ```
 
         -   Proceed with [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
@@ -1392,13 +1392,13 @@ By default, a transient NameID will always be released to the Service Provider i
 3.  Restart Jetty to apply the changes:
 
     ``` text
-    service jetty restart
+    systemctl restart jetty
     ```
 
 4.  Check IdP Status:
 
     ``` text
-    bash /opt/shibboleth-idp/bin/status.sh
+    bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
     ```
 
 5.  Proceed with [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
@@ -1585,13 +1585,13 @@ By default, a transient NameID will always be released to the Service Provider i
 11. Restart Jetty to apply the changes:
 
     ``` text
-    service jetty restart
+    systemctl restart jetty
     ```
 
 12. Check IdP Status:
 
     ``` text
-    bash /opt/shibboleth-idp/bin/status.sh
+    bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
     ```
 
 13. Proceed with [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
@@ -1632,13 +1632,13 @@ which are an internal representation of user data not specific to SAML or any ot
 4.  Restart Jetty to apply the changes:
 
     ``` text
-    service jetty restart
+    systemctl restart jetty
     ```
 
 5.  Check IdP Status:
 
     ``` text
-    bash /opt/shibboleth-idp/bin/status.sh
+    bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
     ```
 
 [[TOC](#table-of-contents)]
@@ -1707,13 +1707,13 @@ To be able to follow these steps, you need to have followed the previous steps o
 5.  Restart Jetty to apply the changes:
 
     ``` text
-    service jetty restart
+    systemctl restart jetty
     ```
 
 6.  Check IdP Status:
 
     ``` text
-    bash /opt/shibboleth-idp/bin/status.sh
+    bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
     ```
 
 7.  Proceed with [Configure Shibboleth IdP Logging](#configure-shibboleth-idp-logging)
@@ -1779,13 +1779,13 @@ To be able to follow these steps, you need to have followed the previous steps o
 5.  Restart Jetty to apply the changes:
 
     ``` text
-    service jetty restart
+    systemctl restart jetty
     ```
 
 6.  Check IdP Status:
 
     ``` text
-    bash /opt/shibboleth-idp/bin/status.sh
+    bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
     ```
 
 7.  Proceed with [Configure Shibboleth IdP Logging](#configure-shibboleth-idp-logging)
@@ -1816,7 +1816,7 @@ Translate the IdP messages in your language:
 
 -   Get the files translated in your language from [MessagesTranslation](https://shibboleth.atlassian.net/wiki/x/BwJwSw)
 -   Put `messages_XX.properties` downloaded file into `/opt/shibboleth-idp/messages` directory
--   Restart Jetty to apply the changes with `service jetty restart`
+-   Restart Jetty to apply the changes with `systemctl restart jetty`
 
 [[TOC](#table-of-contents)]
 
@@ -1835,7 +1835,7 @@ Translate the IdP messages in your language:
 4.  Restart Jetty:
 
     ``` text
-    sudo service jetty restart
+    sudo systemctl restart jetty
     ```
 
 [[TOC](#table-of-contents)]
@@ -2116,7 +2116,7 @@ Follow these steps **ONLY IF** your organization is connected to the [GARR Netwo
 5.  Check IdP Status:
 
     ``` text
-    bash /opt/shibboleth-idp/bin/status.sh
+    bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
     ```
 
 [[TOC](#table-of-contents)]
@@ -2177,7 +2177,7 @@ The IdP includes the ability to require user consent to attribute release, as we
 4.  Restart Jetty:
 
     ``` text
-    service jetty restart
+    systemctl restart jetty
     ```
 
 [[TOC](#table-of-contents)]
