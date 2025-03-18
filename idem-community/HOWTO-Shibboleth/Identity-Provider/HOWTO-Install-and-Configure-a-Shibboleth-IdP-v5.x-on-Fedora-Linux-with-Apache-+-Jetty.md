@@ -127,22 +127,22 @@ Please remember to **replace all occurencences** of:
    mkdir /root/certificates
     ```
     ``` text
-   mv /tmp/idp-cert-server.crt /root/certificates
+   mv /tmp/idp-cert-server.cer /root/certificates
     ```
     ``` text
    mv /tmp/idp-key-server.key /root/certificates
     ```
     ``` text
-   mv /tmp/DigiCertCA.crt /root/certificates
+   mv /tmp/DigiCertCA.cer /root/certificates
     ```
     ``` text
    chmod 400 /root/certificates/idp-key-server.key
     ```
     ``` text
-   chmod 644 /root/certificates/idp-cert-server.crt
+   chmod 644 /root/certificates/idp-cert-server.cer
     ```
     ``` text
-   chmod 644 /root/certificates/DigiCertCA.crt
+   chmod 644 /root/certificates/DigiCertCA.cer
     ```
 
    (OPTIONAL) Create a Certificate and a Key self-signed for HTTPS if you don't have the official ones provided by DigiCert:
@@ -790,39 +790,52 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
 
 [[TOC](#table-of-contents)]
 
-## Configure Apache2 as the front-end of Jetty
+### Configure SSL on Apache2 (Jetty front-end)
 
-The Apache HTTP Server will be configured as a reverse proxy and it will be used for SSL offloading.
+1. Modify the file ```/etc/httpd/conf.d/ssl.conf``` as follows:
 
-1.  Become ROOT:
+   ```apache
+   <VirtualHost _default_:443>
+     ServerName idp.example.org:443
+     ServerAdmin admin@example.org
+     DocumentRoot /var/www/html
+     ...
+     SSLEngine On
+     SSLProtocol all -SSLv2 -SSLv3 -TLSv1
+    
+     SSLCipherSuite "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA:kEDH+AESGCM:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA256:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA256:AES256-GCM-SHA384:!3DES:!DES:!DHE-RSA-AES128-GCM-SHA256:!DHE-RSA-AES256-SHA:!EDE3:!EDH-DSS-CBC-SHA:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC-SHA:!EDH-RSA-DES-CBC3-SHA:!EXP-EDH-DSS-DES-CBC-SHA:!EXP-EDH-RSA-DES-CBC-SHA:!EXPORT:!MD5:!PSK:!RC4-SHA:!aNULL:!eNULL"
+    
+     SSLHonorCipherOrder on
+    
+     # Disable SSL Compression
+     SSLCompression Off
+     # Enable HTTP Strict Transport Security with a 2 year duration
+     Header always set Strict-Transport-Security "max-age=63072000;includeSubDomains"
+     ...
+     SSLCertificateFile /root/certificates/idp-cert-server.crt
+     SSLCertificateKeyFile /root/certificates/idp-key-server.key
+     SSLCertificateChainFile /root/certificates/DigiCertCA.crt
+     ...
+   </VirtualHost>
+   ```
 
-    ``` text
-    sudo su -
-    ```
+2. Configure Apache2 to open port **80** only for localhost:
+   * ```vim /etc/httpd/conf/httpd.conf```
 
-2.  Create the Virtualhost file:
+     ```apache
+     # Listen: Allows you to bind Apache to specific IP addresses and/or
+     # ports, instead of the default. See also the <VirtualHost>
+     # directive.
+     #
+     # Change this to Listen on specific IP addresses as shown below to 
+     # prevent Apache from glomming onto all bound IP addresses.
+     #
+     #Listen 12.34.56.78:80
+     Listen 127.0.0.1:80
+     ```
 
-    ``` text
-    wget https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/apache-conf/idp.example.org.conf -O /etc/apache2/sites-available/$(hostname -f).conf
-    ```
-
-    (do not change `idp.example.org` with the FQDN of the IdP on the GitHub URL provided)
-
-3.  Edit the Virtualhost file (**PLEASE PAY ATTENTION! you need to edit this file and customize it, check the initial comment of the file**):
-
-    ``` text
-    vi /etc/apache2/sites-available/$(hostname -f).conf
-    ```
-
-4.  Enable the Apache2 virtual hosts created:
-
-    -   ``` text
-        a2ensite $(hostname -f).conf
-        ```
-
-    -   ``` text
-        systemctl reload apache2.service
-        ```
+3. Enable **SSL** and **headers** Apache2 modules:
+   * ```service httpd restart```
 
 5.  Check that IdP metadata is available on:
 
