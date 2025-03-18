@@ -671,7 +671,7 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
     cp /opt/shibboleth-idp/dist/webapp/WEB-INF/web.xml /opt/shibboleth-idp/edit-webapp/WEB-INF/web.xml
     ```
 
-3.  Rebuild IdP war file:
+4.  Rebuild IdP war file:
 
     ``` text
     bash /opt/shibboleth-idp/bin/build.sh
@@ -769,6 +769,15 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
     wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/idp.xml" -O /opt/jetty/webapps/idp.xml
     ```
 
+    On `idp.xml` change the line:
+
+    ```<Configure class="org.eclipse.jetty.webapp.WebAppContext">```
+
+    with
+
+    ```<Configure class="org.eclipse.jetty.ee10.webapp.WebAppContext">```
+
+
 3.  Make the **jetty** user owner of IdP main directories:
 
     ``` text
@@ -816,7 +825,7 @@ See the configuration files and the Shibboleth documentation for details.
 Check IdP Status:
 
 ``` text
-bash /opt/shibboleth-idp/bin/status.sh
+bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
 ```
 
 Proceed with [Configure the Directory Connection](#configure-the-directory-connection)
