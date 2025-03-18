@@ -623,10 +623,6 @@ It is a Java Web Application that can be deployed with its WAR file.
         tar -xzf shibboleth-identity-provider-5.1.3.tar.gz
         ```
 
-    -   ``` text
-        cd shibboleth-identity-provider-5.1.3
-        ```
-
 5.  Install Identity Provider Shibboleth:
 
     **NOTE**
