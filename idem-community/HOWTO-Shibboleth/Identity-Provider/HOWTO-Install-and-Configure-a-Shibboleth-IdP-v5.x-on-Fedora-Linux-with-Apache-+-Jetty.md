@@ -709,23 +709,20 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
      SSLCertificateKeyFile /root/certificates/idp-key-server.key
      SSLCertificateChainFile /root/certificates/DigiCertCA.cer
      ...
+   
+    <IfModule mod_proxy.c>
+        ProxyPreserveHost On
+        RequestHeader set X-Forwarded-Proto "https"
+        ProxyPass /idp http://localhost:8080/idp retry=5
+        ProxyPassReverse /idp http://localhost:8080/idp retry=5
+
+        <Location /idp>
+           Require all granted
+        </Location>
+     </IfModule>
+
    </VirtualHost>
    ```
-
-2. Configure Apache2 to open port **80** only for localhost:
-   * ```vim /etc/httpd/conf/httpd.conf```
-
-     ```apache
-     # Listen: Allows you to bind Apache to specific IP addresses and/or
-     # ports, instead of the default. See also the <VirtualHost>
-     # directive.
-     #
-     # Change this to Listen on specific IP addresses as shown below to 
-     # prevent Apache from glomming onto all bound IP addresses.
-     #
-     #Listen 12.34.56.78:80
-     Listen 127.0.0.1:80
-     ```
 
 3. Enable **SSL** and **headers** Apache2 modules:
 
