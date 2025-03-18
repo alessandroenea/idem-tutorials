@@ -782,7 +782,7 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
 4.  Restart Jetty:
 
     ``` text
-    service jetty restart
+    systemctl restart jetty
     ```
 
 [[TOC](#table-of-contents)]
@@ -793,7 +793,7 @@ Shibboleth Documentation reference: [StorageConfiguration](https://shibboleth.at
 
 The IdP provides a number of general-purpose storage facilities that can be used by core subsystems like session management and consent.
 
-### Strategy A - Default (HTML Local Storage, Encryption GCM, No Database) - Recommended
+### Default (HTML Local Storage, Encryption GCM, No Database) - Recommended
 
 The HTML Local Storage requires JavaScript be enabled because reading and writing to the client requires an explicit page be rendered.
 Note that this feature is safe to enable globally. 
@@ -820,149 +820,6 @@ bash /opt/shibboleth-idp/bin/status.sh
 ```
 
 Proceed with [Configure the Directory Connection](#configure-the-directory-connection)
-
-[[TOC](#table-of-contents)]
-
-### Strategy B - JDBC Storage Service - using a database
-
-<https://shibboleth.atlassian.net/wiki/spaces/IDPPLUGINS/pages/2989096970/JDBCStorageService>
-
-This Storage service will memorize User Consent data on a persistent SQL database.
-
-1.  Become ROOT:
-
-    ``` text
-    sudo su -
-    ```
-
-2.  Install SQL database and needed libraries:
-
-    ``` text
-    apt install default-mysql-server libmariadb-java libcommons-dbcp2-java libcommons-pool2-java --no-install-recommends
-    ```
-
-3.  Install JDBCStorageService plugin:
-
-    ``` text
-    /opt/shibboleth-idp/bin/plugin.sh -I net.shibboleth.plugin.storage.jdbc
-    ```
-
-4.  Activate MariaDB database service:
-
-    ``` text
-    systemctl start mariadb.service
-    ```
-
-5.  Address several security concerns in a default MariaDB installation
-    (if it is not already done):
-
-    ``` text
-    mysql_secure_installation
-    ```
-
-6.  (OPTIONAL) MySQL DB Access without password:
-
-    ``` text
-    vi /root/.my.cnf
-    ```
-
-    ``` text
-    [client]
-    user=root
-    password=##ROOT-DB-PASSWORD-CHANGEME##
-    ```
-
-7.  Create `StorageRecords` table on the `storagerecords` database:
-
-    ``` text
-    wget https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/db-conf/shib-sr-db.sql -O /root/shib-sr-db.sql
-    ```
-
-    fill missing datas on the `shib-sr-db.sql` file before import:
-
-    -   ``` text
-        mysql -u root < /root/shib-sr-db.sql
-        ```
-
-    -   ``` text
-        systemctl restart mariadb.service
-        ```
-
-8.  Rebuild IdP war file with the needed libraries:
-
-    -   ``` text
-        mkdir /opt/shibboleth-idp/edit-webapp/WEB-INF/lib
-        ```
-
-    -   ``` text
-        ln -s /usr/share/java/mariadb-java-client.jar /opt/shibboleth-idp/edit-webapp/WEB-INF/lib
-        ```
-
-    -   ``` text
-        ln -s /usr/share/java/commons-dbcp2.jar /opt/shibboleth-idp/edit-webapp/WEB-INF/lib
-        ```
-
-    -   ``` text
-        ln -s /usr/share/java/commons-pool2.jar /opt/shibboleth-idp/edit-webapp/WEB-INF/lib
-        ```
-
-    -   ``` text
-        bash /opt/shibboleth-idp/bin/build.sh
-        ```
-
-9.  Configure JDBC Storage Service:
-
-    ``` text
-    vi /opt/shibboleth-idp/conf/global.xml
-    ```
-
-    and add the following directives to the tail, before the last `</beans>` tag:
-
-    ``` xml+jinja
-    <bean id="storagerecords.JDBCStorageService.DataSource"
-          class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" lazy-init="true"
-          p:driverClassName="org.mariadb.jdbc.Driver"
-          p:url="jdbc:mysql://localhost:3306/storagerecords?autoReconnect=true"
-          p:username="###_SR-USERNAME-CHANGEME_###"
-          p:password="###_SR-DB-USER-PASSWORD-CHANGEME_###"
-          p:maxTotal="10"
-          p:maxIdle="5"
-          p:maxWaitMillis="15000"
-          p:testOnBorrow="true"
-          p:validationQuery="select 1"
-          p:validationQueryTimeout="5" />
-
-    <bean id="storagerecords.JDBCStorageService" parent="shibboleth.JDBCStorageService"
-          p:dataSource-ref="storagerecords.JDBCStorageService.DataSource" />
-    ```
-
-    **!!! IMPORTANT !!!**:
-
-    remember to change "**\###\_SR-USERNAME-CHANGEME\_###**" and "**\###\_SR-DB-USER-PASSWORD-CHANGEME\_###**" with your DB user and password data.
-
-10. Set the consent storage service to the JDBC storage service:
-
-    * ``` text
-      vi /opt/shibboleth-idp/conf/idp.properties
-      ```
-
-      ``` text
-      idp.consent.StorageService = storagerecords.JDBCStorageService
-      ```
-
-11. Restart Jetty to apply the changes:
-
-    ``` text
-    service jetty restart
-    ```
-
-12. Check IdP Status:
-
-    ``` text
-    bash /opt/shibboleth-idp/bin/status.sh
-    ```
-
-13. Proceed with [Configure the Directory Connection](#configure-the-directory-connection)
 
 [[TOC](#table-of-contents)]
 
