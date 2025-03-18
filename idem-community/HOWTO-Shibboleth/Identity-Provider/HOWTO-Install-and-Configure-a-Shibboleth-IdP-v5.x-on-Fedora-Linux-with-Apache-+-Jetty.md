@@ -112,7 +112,7 @@ Please remember to **replace all occurencences** of:
     ```
 
      ```bash
-     export JAVA_HOME=/usr/lib/jvm/jre-23-openjdk-23.0.0.0.36-1.rolling.fc40.x86_64
+     export JAVA_HOME=/usr/lib/jvm/jre-24-openjdk
      export IDP_HOME=/opt/shibboleth-idp
      export IDP_SRC=/opt/shibboleth-idp-5.1.3
      export JETTY_HOME=/opt/jetty-src
