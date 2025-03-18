@@ -738,7 +738,7 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
    </VirtualHost>
    ```   
 
-4. Enable **SSL** and **headers** Apache2 modules:
+4. Enable and start Apache web server:
 
    ``` text
     systemctl enable httpd
