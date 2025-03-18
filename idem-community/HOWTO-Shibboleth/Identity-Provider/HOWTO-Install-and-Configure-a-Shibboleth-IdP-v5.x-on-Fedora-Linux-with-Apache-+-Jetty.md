@@ -765,84 +765,25 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
 
 2.  Configure the Jetty Context Descriptor:
 
-    -   ``` text
-        mkdir /opt/jetty/webapps
-        ```
-
-    -   ``` text
-        wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/idp.xml" -O /opt/jetty/webapps/idp.xml
-        ```
+    ``` text
+    wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/idp.xml" -O /opt/jetty/webapps/idp.xml
+    ```
 
 3.  Make the **jetty** user owner of IdP main directories:
 
-    -   ``` text
-        cd /opt/shibboleth-idp
-        ```
+    ``` text
+    cd /opt/shibboleth-idp
+    ```
 
-    -   ``` text
-        chown -R jetty logs/ metadata/ credentials/ conf/ war/
-        ```
+    ``` text
+    chown -R jetty logs/ metadata/ credentials/ conf/ war/
+    ```
 
 4.  Restart Jetty:
 
     ``` text
     service jetty restart
     ```
-
-[[TOC](#table-of-contents)]
-
-### Configure SSL on Apache2 (Jetty front-end)
-
-1. Modify the file ```/etc/httpd/conf.d/ssl.conf``` as follows:
-
-   ```apache
-   <VirtualHost _default_:443>
-     ServerName idp.example.org:443
-     ServerAdmin admin@example.org
-     DocumentRoot /var/www/html
-     ...
-     SSLEngine On
-     SSLProtocol all -SSLv2 -SSLv3 -TLSv1
-    
-     SSLCipherSuite "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA:kEDH+AESGCM:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA256:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA256:AES256-GCM-SHA384:!3DES:!DES:!DHE-RSA-AES128-GCM-SHA256:!DHE-RSA-AES256-SHA:!EDE3:!EDH-DSS-CBC-SHA:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC-SHA:!EDH-RSA-DES-CBC3-SHA:!EXP-EDH-DSS-DES-CBC-SHA:!EXP-EDH-RSA-DES-CBC-SHA:!EXPORT:!MD5:!PSK:!RC4-SHA:!aNULL:!eNULL"
-    
-     SSLHonorCipherOrder on
-    
-     # Disable SSL Compression
-     SSLCompression Off
-     # Enable HTTP Strict Transport Security with a 2 year duration
-     Header always set Strict-Transport-Security "max-age=63072000;includeSubDomains"
-     ...
-     SSLCertificateFile /root/certificates/idp-cert-server.crt
-     SSLCertificateKeyFile /root/certificates/idp-key-server.key
-     SSLCertificateChainFile /root/certificates/DigiCertCA.crt
-     ...
-   </VirtualHost>
-   ```
-
-2. Configure Apache2 to open port **80** only for localhost:
-   * ```vim /etc/httpd/conf/httpd.conf```
-
-     ```apache
-     # Listen: Allows you to bind Apache to specific IP addresses and/or
-     # ports, instead of the default. See also the <VirtualHost>
-     # directive.
-     #
-     # Change this to Listen on specific IP addresses as shown below to 
-     # prevent Apache from glomming onto all bound IP addresses.
-     #
-     #Listen 12.34.56.78:80
-     Listen 127.0.0.1:80
-     ```
-
-3. Enable **SSL** and **headers** Apache2 modules:
-   * ```service httpd restart```
-
-5.  Check that IdP metadata is available on:
-
-    `https://idp.example.org/idp/shibboleth`
-
-6.  Verify the strength of your IdP's machine on [SSLLabs](https://www.ssllabs.com/ssltest/analyze.html).
 
 [[TOC](#table-of-contents)]
 
