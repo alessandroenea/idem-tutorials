@@ -39,12 +39,11 @@
 24. [Configure Attribute Filter Policy to release attributes to Federated Resources](#configure-attribute-filter-policy-to-release-attributes-to-federated-resources)
 25. [Register the IdP on the IDEM Test Federation](#register-the-idp-on-the-idem-test-federation)
 26. [Appendix A: Enable Consent Module (Attribute Release + Terms of Use Consent)](#appendix-a-enable-consent-module-attribute-release--terms-of-use-consent)
-27. [Appendix B: Import persistent-id from a previous database](#appendix-b-import-persistent-id-from-a-previous-database)
-28. [Appendix C: Useful logs to find problems](#appendix-c-useful-logs-to-find-problems)
-29. [Appendix D: Connect an SP with the IdP](#appendix-d-connect-an-sp-with-the-idp)
-30. [Utilities](#utilities)
-31. [Useful Documentation](#useful-documentation)
-32. [Authors](#authors)
+27. [Appendix C: Useful logs to find problems](#appendix-c-useful-logs-to-find-problems)
+28. [Appendix D: Connect an SP with the IdP](#appendix-d-connect-an-sp-with-the-idp)
+29. [Utilities](#utilities)
+30. [Useful Documentation](#useful-documentation)
+31. [Authors](#authors)
 
 ## Requirements
 
@@ -1465,40 +1464,6 @@ The IdP includes the ability to require user consent to attribute release, as we
 
     ``` text
     systemctl restart jetty
-    ```
-
-[[TOC](#table-of-contents)]
-
-## Appendix B: Import persistent-id from a previous database
-
-Follow these steps **ONLY IF** your need to import persistent-id database from another IdP
-
-1.  Become ROOT:
-
-    ``` text
-    sudo su -
-    ```
-
-2.  Create a DUMP of `shibpid` table from the previous DB `shibboleth` on the OLD IdP:
-
-    ``` text
-    cd /tmp
-
-    mysqldump --complete-insert --no-create-db --no-create-info -u root -p shibboleth shibpid > /tmp/shibboleth_shibpid.sql
-    ```
-
-3.  Copy the `/tmp/shibboleth_shibpid.sql` from the old IdP into `/tmp/shibboleth_shibpid.sql` on the new IdP.
-
-4.  Import the content of `/tmp/shibboleth_shibpid.sql` into database of the new IDP:
-
-    ``` text
-    cd /tmp ; mysql -u root -p shibpid < /tmp/shibboleth_shibpid.sql
-    ```
-
-5.  Delete `/tmp/shibboleth_shibpid.sql`:
-
-    ``` text
-    rm /tmp/shibboleth_shibpid.sql
     ```
 
 [[TOC](#table-of-contents)]
