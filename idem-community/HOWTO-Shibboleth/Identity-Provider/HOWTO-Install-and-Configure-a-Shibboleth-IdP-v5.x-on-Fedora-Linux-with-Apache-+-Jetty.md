@@ -1341,11 +1341,7 @@ Translate the IdP messages in your language:
     <li class="list-help-item"><a href="#springMessageText("idp.url.privacyPage", '#')"><span class="item-marker">&rsaquo;</span> #springMessageText("idp.login.privacyPage", "Privacy Policy")</a></li>
     ```
 
-    under the line containing the Anchor:
-
-    ``` text
-    <a href="#springMessageText("idp.url.helpdesk", '#')">
-    ```
+    under the line containing the Anchor:  `<a href="#springMessageText("idp.url.helpdesk", '#')">`
 
 2.  Add the new variables defined with lines added at point 1 into all `messages*.properties` files linked to the view `view/login.vm`:
 
