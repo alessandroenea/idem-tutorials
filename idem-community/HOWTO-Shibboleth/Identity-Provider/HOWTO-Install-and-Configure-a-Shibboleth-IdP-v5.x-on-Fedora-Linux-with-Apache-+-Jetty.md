@@ -1307,7 +1307,7 @@ Translate the IdP messages in your language:
 -   Put `messages_XX.properties` downloaded file into `/opt/shibboleth-idp/messages` directory
 -   Restart Jetty to apply the changes with
     ``` text
-    systemctl restart jetty`
+    systemctl restart jetty
     ```
 
 [[TOC](#table-of-contents)]
