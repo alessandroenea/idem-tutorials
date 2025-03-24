@@ -28,7 +28,6 @@
 14. [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
 15. [Configure Shibboleth Identity Provider to release the eduPersonTargetedID](#configure-shibboleth-identity-provider-to-release-the-edupersontargetedid)
     1.  [Strategy A - Computed mode - using the computed persistent NameID - Recommended](#strategy-a---computed-mode---using-the-computed-persistent-nameid---recommended)
-    2.  [Strategy B - Stored mode - using the persistent NameID database](#strategy-b---stored-mode---using-the-persistent-nameid-database)
 16. [Configure Shibboleth IdP Logging](#configure-shibboleth-idp-logging)
 17. [Translate IdP messages into preferred language](#translate-idp-messages-into-preferred-language)
 18. [Enrich IdP Login Page with the Institutional Logo](#enrich-idp-login-page-with-the-institutional-logo)
@@ -1251,78 +1250,6 @@ To be able to follow these steps, you need to have followed the previous steps o
 
         <InputDataConnector ref="myLDAP" attributeNames="%{idp.persistentId.sourceAttribute}" />
 
-    </DataConnector>
-    ```
-
-3.  Create the custom `eduPersonTargetedID.properties` file:
-
-    ``` text
-    wget https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/conf/attributes/custom/eduPersonTargetedID.properties -O /opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
-    ```
-
-4.  Set proper owner/group with:
-
-    ``` text
-    chown jetty:root /opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
-    ```
-
-5.  Restart Jetty to apply the changes:
-
-    ``` text
-    systemctl restart jetty
-    ```
-
-6.  Check IdP Status:
-
-    ``` text
-    bash /opt/shibboleth-idp/bin/status.sh -u http://localhost:8080/idp
-    ```
-
-7.  Proceed with [Configure Shibboleth IdP Logging](#configure-shibboleth-idp-logging)
-
-[[TOC](#table-of-contents)]
-
-### Strategy B - Stored mode - using the persistent NameID database
-
-1.  Become ROOT:
-
-    ``` text
-    sudo su -
-    ```
-
-2.  Check to have the following `<AttributeDefinition>` and the
-    `<DataConnector>` into the `attribute-resolver.xml`:
-
-    ``` text
-    vi /opt/shibboleth-idp/conf/attribute-resolver.xml`
-    ```
-
-    ``` xml+jinja
-    <!-- ...other things ... -->
-
-    <!--  AttributeDefinition for eduPersonTargetedID - Stored Mode  -->
-    <!--
-          WARN [DEPRECATED:173] - xsi:type 'SAML2NameID'
-          This feature is at-risk for removal in a future version
-
-          NOTE: eduPersonTargetedID is DEPRECATED and should not be used.
-    -->
-    <AttributeDefinition xsi:type="SAML2NameID" nameIdFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" id="eduPersonTargetedID">
-        <InputDataConnector ref="stored" attributeNames="storedId" />
-    </AttributeDefinition>
-
-    <!-- ... other things... -->
-
-    <!--  Data Connector for eduPersonTargetedID - Stored Mode  -->
-
-    <DataConnector id="stored" xsi:type="StoredId"
-        generatedAttributeID="storedId"
-        salt="%{idp.persistentId.salt}"
-        queryTimeout="0">
-
-        <InputDataConnector ref="myLDAP" attributeNames="%{idp.persistentId.sourceAttribute}" />
-
-        <BeanManagedConnection>shibpid.JDBCStorageService.DataSource</BeanManagedConnection>
     </DataConnector>
     ```
 
