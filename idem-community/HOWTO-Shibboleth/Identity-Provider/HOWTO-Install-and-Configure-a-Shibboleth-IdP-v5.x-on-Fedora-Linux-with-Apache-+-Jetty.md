@@ -226,224 +226,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     mkdir /opt/jetty
     ```
 
-     ``` text
-    vi /opt/jetty/start.ini
-     ```
-    (the `start.ini` provided is adapted to be used with [IDEM MDX](https://mdx.idem.garr.it/) service)
-
-     ```bash
-     #===========================================================
-     # Jetty Startup
-     #
-     # Starting Jetty from this {jetty.home} is not recommended.
-     #
-    # A proper {jetty.base} directory should be configured, instead
-    # of making changes to this {jetty.home} directory.
-    #
-    # See documentation about {jetty.base} at
-    # http://www.eclipse.org/jetty/documentation/current/startup.html
-    #
-    # A demo-base directory has been provided as an example of
-    # this sort of setup.
-    #
-    # $ cd demo-base
-    # $ java -jar ../start.jar
-    #
-    #===========================================================
-
-    # ---------------------------------------
-    # Module: annotations
-    # Enables Annotation scanning for deployed web applications.
-    #
-    # Check ${JETTY.BASE}/modules/annotations.mod
-    # ---------------------------------------
-    --module=ee10-annotations
-
-    # ---------------------------------------
-    # Module: console-capture
-    # Redirects the JVM console stderr and stdout to a rolling log file.
-    #
-    # Check ${JETTY.BASE}/modules/console-capture.mod
-    # ---------------------------------------
-    --module=console-capture
-
-    jetty.console-capture.dir=/var/log/jetty
-
-    # ---------------------------------------
-    # Module: deploy
-    # Enables webapplication deployment from the webapps directory.
-    # By default, the scan interval is 1 second, which means that hot deployment is enabled: 
-    # if a file is added/changed/removed from the $JETTY_BASE/webapps directory, 
-    # the DeploymentManager will notice the change and respectively deploy/redeploy/undeploy the web application.
-    #
-    # Check ${JETTY.BASE}/modules/deploy.mod
-    # ---------------------------------------
-    --module=ee10-deploy
-
-    # ---------------------------------------
-    # Module: ext
-    # Adds all jar files discovered in $JETTY_HOME/lib/ext
-    # and $JETTY_BASE/lib/ext to the servers classpath.
-    #
-    # Check ${JETTY.BASE}/modules/ext.mod
-    # ---------------------------------------
-    #--module=ext
-
-    # ---------------------------------------
-    # Module: home-base-warining
-    # Generates a warning that server has been run from $JETTY_HOME rather than from a $JETTY_BASE.
-    #
-    # Check ${JETTY.BASE}/modules/home-base-warning.mod
-    # ---------------------------------------
-    --module=home-base-warning
-
-    # ---------------------------------------
-    # Module: http
-    # Enables a HTTP connector on the server.
-    # By default HTTP/1 is support, but HTTP2C can
-    # be added to the connector with the http2c module.
-    #
-    # Check ${JETTY.BASE}/modules/http.mod
-    # ---------------------------------------
-    --module=http
-
-
-    # ---------------------------------------
-    # Module: http-forwarded
-    # Enables processing of the "Forwarded" HTTP header (and its predecessors "X-Forwarded-*" HTTP headers)
-    #
-    # Check ${JETTY.BASE}/modules/http-forwarded.mod
-    # ---------------------------------------
-    --module=http-forwarded
-
-    # ---------------------------------------
-    # Module: jsp
-    # Enables JSP for all webapplications deployed on the server.
-    #
-    # Check ${JETTY.BASE}/modules/jsp.mod
-    # ---------------------------------------
-    --module=ee10-jsp
-
-    # ---------------------------------------
-    # Module: jstl
-    # Enables JSTL for all webapplications deployed on the server
-    #
-    # Check ${JETTY.BASE}/modules/jstl.mod
-    # ---------------------------------------
-    --module=ee10-jstl
-
-    # ---------------------------------------
-    # Module logging-logback
-    # Configures Jetty logging to use Logback Logging.
-    #
-    # Check ${JETTY.BASE}/modules/logging-logback.mod
-    # ---------------------------------------
-    --module=logging-logback
-
-    # ---------------------------------------
-    # Module logging-jetty
-    # Base configuration for the jetty logging mechanism.
-    # 
-    # Check ${JETTY.BASE}/modules/logging-jetty.mod
-    # ---------------------------------------
-    # --module=logging-jetty
-
-    # ---------------------------------------
-    # Module: plus
-    # Enables Servlet 3.1 resource injection.
-    #
-    # Check ${JETTY.BASE}/modules/plus.mod
-    # ---------------------------------------
-    --module=plus
-
-    # ---------------------------------------
-    # Module: requestlog
-    # Logs requests using CustomRequestLog and AsyncRequestLogWriter.
-    #
-    # Check ${JETTY.BASE}/modules/requestlog.mod
-    # ---------------------------------------
-    --module=requestlog
-
-    # ---------------------------------------
-    # Module: resources
-    # Adds the $JETTY_HOME/resources and/or $JETTY_BASE/resources
-    # directory to the server classpath. Useful for configuration
-    # property files (eg jetty-logging.properties)
-    #
-    # Check ${JETTY.BASE}/modules/resources.mod
-    # ---------------------------------------
-    --module=resources
-
-    # ---------------------------------------
-    # Module: server
-    # Enables the core Jetty server on the classpath.
-    # 
-    # Check ${JETTY.BASE}/modules/server.mod
-    # ---------------------------------------
-    --module=server
-
-    # ---------------------------------------
-    # Module: servlets
-    # Adds Jetty utility servlets and filters available to a webapp.
-    #
-    # Check ${JETTY.BASE}/modules/servlets.mod
-    # ---------------------------------------
-    --module=ee10-servlets
-
-    # ---------------------------------------
-    # Module: threadpool
-    # Enables and configures the Server ThreadPool.
-    #
-    # Check ${JETTY.BASE}/modules/threadpool.mod
-    # ---------------------------------------
-    --module=threadpool
-
-    # ---------------------------------------
-    # Module: websocket
-    # Enable both jetty and jakarta websocket jetty modules for deployed web applications.
-    #
-    # Check ${JETTY.BASE}/modules/websocket.mod
-    # ---------------------------------------
-    --module=ee10-websocket-jetty
-
-    # Allows setting Java system properties (-Dname=value)
-    # and JVM flags (-X, -XX) in this file
-    # NOTE: spawns child Java process
-    --exec
-
-    # Disable Explicit Garbage Collection
-    -XX:+DisableExplicitGC
-
-    # Enable the parallel collector
-    -XX:+UseParallelGC
-
-    # Maximum amount of memory that Jetty may use, at least 1.5G is recommended
-    # for handling larger (> 25M) metadata files but you will need to test on
-    # your particular metadata configuration. If MDQ metadata on demand is used,
-    # requirements may be much lower.
-    -Xmx500m
-
-    # The initial Java heap size
-    -Xms256m
-
-    # Prevent blocking for entropy.
-    -Djava.security.egd=file:/dev/urandom
-
-    # Set Java tmp location (relative to JETTY_BASE)
-    -Djava.io.tmpdir=/opt/jetty/tmp
-
-    # Enable Java’s headless mode 
-    # needed to work with graphics-based applications in Java without an actual display, keyboard, or mouse
-    -Djava.awt.headless=true
-
-    # Enable Jetty logback logging
-    -Dlogback.configurationFile=resources/logback.xml
-
-     ```
-
-
-
-7.  Create the TMPDIR directory used by Jetty:
+6.  Create the TMPDIR directory used by Jetty:
 
     ``` text
     mkdir /opt/jetty/tmp ; chown jetty:jetty /opt/jetty/tmp
@@ -453,7 +236,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     chown -R jetty:jetty /opt/jetty /opt/jetty-src
     ```
 
-8.  Create the Jetty Logs' folders:
+7.  Create the Jetty Logs' folders:
 
     ``` text
     mkdir /var/log/jetty
@@ -463,7 +246,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     chown jetty:jetty /var/log/jetty
     ```
 
-9. Configure **/etc/default/jetty**:
+8. Configure **/etc/default/jetty**:
 
     ``` text
     update-alternatives --config java
@@ -481,7 +264,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     EOF'
     ```
 
-11. Create the service loadable from command line:
+9. Create the service loadable from command line:
 
     ``` text
     cp /opt/jetty-src/bin/jetty.service /etc/systemd/system/jetty.service
@@ -508,7 +291,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     systemctl enable jetty.service
     ```
 
-12. Install & configure several Jetty modules:
+10. Install & configure several Jetty modules:
 
     ```text
     cd /opt/jetty
@@ -552,7 +335,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/jetty-logging.properties" -O /opt/jetty/resources/jetty-logging.properties
     ```
 
-14. Check if all settings are OK:
+11. Check if all settings are OK:
 
     ``` text
     systemctl check jetty
