@@ -26,7 +26,6 @@
     2.  [Active Directory connection](#active-directory-connection)
 13. [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
     1.  [Strategy A - Computed mode (Default) - Recommended](#strategy-a---computed-mode-default---recommended)
-    2.  [Strategy B - Stored mode - using a database](#strategy-b---stored-mode---using-a-database)
 14. [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
 15. [Configure Shibboleth Identity Provider to release the eduPersonTargetedID](#configure-shibboleth-identity-provider-to-release-the-edupersontargetedid)
     1.  [Strategy A - Computed mode - using the computed persistent NameID - Recommended](#strategy-a---computed-mode---using-the-computed-persistent-nameid---recommended)
