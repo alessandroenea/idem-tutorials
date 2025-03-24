@@ -1307,13 +1307,13 @@ These instructions will regularly update the secret key (and increase its versio
     sudo chmod +x /opt/shibboleth-idp/bin/updateIDPsecrets.sh
     ```
 
-4.  Install Cron:
+3.  Install Cron:
 
     ``` text
-    sudo apt install cron
+    sudo dnf install crontabs
     ```
 
-5.  Create the CRON script to run it:
+4.  Create the CRON script to run it:
 
     ``` text
     sudo vi /etc/cron.daily/updateIDPsecrets
@@ -1325,19 +1325,19 @@ These instructions will regularly update the secret key (and increase its versio
     /opt/shibboleth-idp/bin/updateIDPsecrets.sh
     ```
 
-6.  Provide the right privileges to the script:
+5.  Provide the right privileges to the script:
 
     ``` text
     sudo chmod +x /etc/cron.daily/updateIDPsecrets
     ```
 
-7.  Confirm that the script will be run daily with (you should see your script in the command output):
+6.  Confirm that the script will be run daily with (you should see your script in the command output):
 
     ``` text
     sudo run-parts --test /etc/cron.daily
     ```
 
-8.  (OPTIONAL) Add the following properties to `conf/idp.properties` if you need to set different values than defaults:
+7.  (OPTIONAL) Add the following properties to `conf/idp.properties` if you need to set different values than defaults:
 
     -   `idp.sealer._count` - Number of earlier keys to keep (default "30")
     -   `idp.sealer._sync_hosts` - Space separated list of hosts to scp the sealer files to (default generate locally)
