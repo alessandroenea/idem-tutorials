@@ -529,7 +529,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     ``` text
     vi start.d/console-capture.ini
     ```
-    Set line: jetty.console-capture.dir=/var/log/jetty
+    Set line: `jetty.console-capture.dir=/var/log/jetty`
 
     ``` text
     chown jetty:jetty /opt/jetty/logs
