@@ -1250,8 +1250,6 @@ Change the content of `idp.url.password.reset` and `idp.url.helpdesk` variables 
 
 **(only for italian identity federation IDEM members)**
 
-From the v5.1.3, the installer miss a space between `<md:EntityDescriptor` and `entityID` into the `/opt/shibboleth-idp/idp-metadata.xml`. **Make sure to add it before procede.**
-
 1.  Modify the IdP metadata as follow:
 
     ``` text
@@ -1260,9 +1258,11 @@ From the v5.1.3, the installer miss a space between `<md:EntityDescriptor` and `
 
     1.  Remove completely the initial default comment
 
-    2.  Remove completely the `<mdui:UIInfo>` element and its content too.
+    2.  From the v5.1.3, the installer miss a space between `<md:EntityDescriptor` and `entityID` into the first line, add this space
 
-    3.  Add the `HTTP-Redirect` SingleLogoutService endpoints under the `SOAP` one:
+    3.  Remove completely the `<mdui:UIInfo>` element and its content too.
+
+    4.  Add the `HTTP-Redirect` SingleLogoutService endpoints under the `SOAP` one:
 
         ``` xml+jinja
         <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.example.org/idp/profile/SAML2/Redirect/SLO"/>
@@ -1270,7 +1270,7 @@ From the v5.1.3, the installer miss a space between `<md:EntityDescriptor` and `
 
         (replace `idp.example.org` value with the Full Qualified Domain Name of the Identity Provider.)
 
-    4.  Between the last `<SingleLogoutService>` and the first `<SingleSignOnService>` endpoints add:
+    5.  Between the last `<SingleLogoutService>` and the first `<SingleSignOnService>` endpoints add:
 
         ``` xml+jinja
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
@@ -1279,7 +1279,7 @@ From the v5.1.3, the installer miss a space between `<md:EntityDescriptor` and `
 
         (because the IdP installed with this guide will release transient NameID, by default, and persistent NameID if requested.)
 
-2.  Check that the metadata is available on `/idp/shibboleth` location:
+3.  Check that the metadata is available on `/idp/shibboleth` location:
 
 `https://idp.example.org/idp/shibboleth`
 
