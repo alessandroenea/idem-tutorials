@@ -39,8 +39,8 @@
 24. [Configure Attribute Filter Policy to release attributes to Federated Resources](#configure-attribute-filter-policy-to-release-attributes-to-federated-resources)
 25. [Register the IdP on the IDEM Test Federation](#register-the-idp-on-the-idem-test-federation)
 26. [Appendix A: Enable Consent Module (Attribute Release + Terms of Use Consent)](#appendix-a-enable-consent-module-attribute-release--terms-of-use-consent)
-27. [Appendix C: Useful logs to find problems](#appendix-c-useful-logs-to-find-problems)
-28. [Appendix D: Connect an SP with the IdP](#appendix-d-connect-an-sp-with-the-idp)
+27. [Appendix B: Useful logs to find problems](#appendix-c-useful-logs-to-find-problems)
+28. [Appendix C: Connect an SP with the IdP](#appendix-d-connect-an-sp-with-the-idp)
 29. [Utilities](#utilities)
 30. [Useful Documentation](#useful-documentation)
 31. [Authors](#authors)
@@ -1468,7 +1468,7 @@ The IdP includes the ability to require user consent to attribute release, as we
 
 [[TOC](#table-of-contents)]
 
-## Appendix C: Useful logs to find problems
+## Appendix B: Useful logs to find problems
 
 Follow this if you need to find a problem of your IdP.
 
@@ -1493,7 +1493,7 @@ Follow this if you need to find a problem of your IdP.
 
 [[TOC](#table-of-contents)]
 
-## Appendix D: Connect an SP with the IdP
+## Appendix C: Connect an SP with the IdP
 
 DOC:
 
