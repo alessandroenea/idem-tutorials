@@ -1305,7 +1305,10 @@ Translate the IdP messages in your language:
 
 -   Get the files translated in your language from [MessagesTranslation](https://shibboleth.atlassian.net/wiki/x/BwJwSw)
 -   Put `messages_XX.properties` downloaded file into `/opt/shibboleth-idp/messages` directory
--   Restart Jetty to apply the changes with `systemctl restart jetty`
+-   Restart Jetty to apply the changes with
+    ``` text
+    systemctl restart jetty`
+    ```
 
 [[TOC](#table-of-contents)]
 
