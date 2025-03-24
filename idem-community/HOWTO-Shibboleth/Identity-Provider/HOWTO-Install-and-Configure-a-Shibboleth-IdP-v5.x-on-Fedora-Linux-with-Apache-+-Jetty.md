@@ -1413,6 +1413,16 @@ Change the content of `idp.footer` variable into all `messages*.properties` file
     idp.footer=Testo del Footer a pie di pagina per la versione italiana della pagina di login dell'IdP
     ```
 
+    Rebuild IdP WAR file and Restart Jetty to apply changes:
+
+    -   ``` text
+        bash /opt/shibboleth-idp/bin/build.sh
+        ```
+
+    -   ``` text
+        sudo systemctl restart jetty
+        ```
+
 [[TOC](#table-of-contents)]
 
 ## Change default "Forgot your password?" and "Need help?" endpoints
@@ -1446,6 +1456,16 @@ Change the content of `idp.url.password.reset` and `idp.url.helpdesk` variables 
     idp.url.password.reset=CONTENUTO-PER-LINK-PASSWORD-DIMENTICATA
     idp.url.helpdesk=CONTENUTO-PER-SERVE-AIUTO-LINK
     ```
+
+    Rebuild IdP WAR file and Restart Jetty to apply changes:
+
+    -   ``` text
+        bash /opt/shibboleth-idp/bin/build.sh
+        ```
+
+    -   ``` text
+        sudo systemctl restart jetty
+        ```
 
 [[TOC](#table-of-contents)]
 
