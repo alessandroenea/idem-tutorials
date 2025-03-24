@@ -910,11 +910,7 @@ By default, a transient NameID will always be released to the Service Provider i
         vi /opt/shibboleth-idp/conf/saml-nameid.xml
         ```
 
-        Uncomment the line:
-
-        ``` xml+jinja
-        <ref bean="shibboleth.SAML2PersistentGenerator" />
-        ```
+        Uncomment the line: `<ref bean="shibboleth.SAML2PersistentGenerator" />`
 
     -   ``` xml+jinja
         vi /opt/shibboleth-idp/credentials/secrets.properties
