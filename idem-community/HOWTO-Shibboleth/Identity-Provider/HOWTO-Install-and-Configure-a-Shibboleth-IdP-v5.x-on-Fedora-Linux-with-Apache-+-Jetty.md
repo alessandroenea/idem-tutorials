@@ -646,8 +646,6 @@ It is a Java Web Application that can be deployed with its WAR file.
 
     By starting from this point, the variable **%{idp.home}** into some IdP configuration files refers to the directory: `/opt/shibboleth-idp`
 
-    From the v5.1.3, the installer miss a space between `<md:EntityDescriptor` and `entityID` into the `/opt/shibboleth-idp/idp-metadata.xml`. **Make sure to add it before procede.**
-
 [[TOC](#table-of-contents)]
 
 ## Disable Jetty Directory Indexing
@@ -1472,6 +1470,8 @@ Change the content of `idp.url.password.reset` and `idp.url.helpdesk` variables 
 ## Update IdP metadata
 
 **(only for italian identity federation IDEM members)**
+
+From the v5.1.3, the installer miss a space between `<md:EntityDescriptor` and `entityID` into the `/opt/shibboleth-idp/idp-metadata.xml`. **Make sure to add it before procede.**
 
 1.  Modify the IdP metadata as follow:
 
