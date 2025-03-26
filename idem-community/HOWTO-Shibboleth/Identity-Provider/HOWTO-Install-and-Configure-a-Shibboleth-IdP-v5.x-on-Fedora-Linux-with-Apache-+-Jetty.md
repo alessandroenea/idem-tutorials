@@ -19,10 +19,10 @@
 11. [Configure the Directory Connection](#configure-the-directory-connection)
     1.  [openLDAP directory connection](#openldap-directory-connection)
 12. [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
-    1.  [Strategy A - Computed mode (Default) - Recommended](#strategy-a---computed-mode-default---recommended)
+    1.  [Computed mode (Default) - Recommended](#computed-mode-default---recommended)
 13. [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
 14. [Configure Shibboleth Identity Provider to release the eduPersonTargetedID](#configure-shibboleth-identity-provider-to-release-the-edupersontargetedid)
-    1.  [Strategy A - Computed mode - using the computed persistent NameID - Recommended](#strategy-a---computed-mode---using-the-computed-persistent-nameid---recommended)
+    1.  [Computed mode - using the computed persistent NameID - Recommended](#computed-mode---using-the-computed-persistent-nameid---recommended)
 15. [Configure Shibboleth IdP Logging](#configure-shibboleth-idp-logging)
 16. [Translate IdP messages into preferred language](#translate-idp-messages-into-preferred-language)
 17. [Enrich IdP Login Page with the Institutional Logo](#enrich-idp-login-page-with-the-institutional-logo)
@@ -872,7 +872,7 @@ This part will teach you how to release the "*persistent*" identifiers with a da
 
 By default, a transient NameID will always be released to the Service Provider if the persistent one is not requested.
 
-### Strategy A - Computed mode (Default) - Recommended
+### Computed mode (Default) - Recommended
 
 1.  Become ROOT:
 
@@ -981,7 +981,7 @@ eduPersonTargetedID is an abstracted version of the SAML V2.0 Name Identifier fo
 
 To be able to follow these steps, you need to have followed the previous steps on `persistent` NameID generation.
 
-### Strategy A - Computed mode - using the computed persistent NameID - Recommended
+### Computed mode - using the computed persistent NameID - Recommended
 
 1.  Become ROOT:
 
