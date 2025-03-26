@@ -1371,7 +1371,7 @@ Follow these steps **ONLY IF** your organization is connected to the [GARR Netwo
 
     <bean id="IdemAttributeFilterFull" class="net.shibboleth.ext.spring.resource.FileBackedHTTPResource"
           c:client-ref="MyHTTPClient"
-          c:url="https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/conf/idem-attribute-filter-v5-full.xml"
+          c:url="https://conf.idem.garr.it/idem-attribute-filter-shib-v5-full.xml"
           c:backingFile="%{idp.home}/conf/idem-attribute-filter-full.xml"/>
     ```
 
