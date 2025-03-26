@@ -68,7 +68,7 @@
     -   size: 16x16 px (or other that respect the aspect-ratio)
     -   format: PNG
     -   style: with a transparent background
--   Image: fedora-cloud-base-generic.x86_64-40-1.14.qcow2
+-   Virtual Machine Image: fedora-cloud-base-generic.x86_64-40-1.14.qcow2
 
 [[TOC](#table-of-contents)]
 
@@ -1574,7 +1574,6 @@ Follow these steps **IF** your organization **IS NOT** connected to the [GARR Ne
 Alessandro Enea <alessandro.enea@ilc.cnr.it>
 
 This guide is an adaptation of the guide for Debian-Ubuntu by Marco Malavolti (<marco.malavolti@garr.it>):
-
 [HOWTO-Install-and-Configure-a-Shibboleth-IdP-v5.x-on-Debian-Ubuntu-Linux-with-Apache-+-Jetty](https://github.com/ConsortiumGARR/idem-tutorials/blob/master/idem-fedops/HOWTO-Shibboleth/Identity%20Provider/Debian-Ubuntu/HOWTO-Install-and-Configure-a-Shibboleth-IdP-v5.x-on-Debian-Ubuntu-Linux-with-Apache-%2B-Jetty.md)
 
 [[TOC](#table-of-contents)]
