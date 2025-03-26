@@ -15,14 +15,14 @@
 8.  [Configure Apache Web Server](#configure-apache-web-server)
 9. [Configure Jetty Context Descriptor for IdP](#configure-jetty-context-descriptor-for-idp)
 10. [Configure Shibboleth Identity Provider Storage Service](#configure-shibboleth-identity-provider-storage-service)
-    1.  [Default (HTML Local Storage, Encryption GCM, No Database) - Recommended](#default-html-local-storage-encryption-gcm-no-database---recommended)
+    1.  [Default (HTML Local Storage, Encryption GCM, No Database)](#default-html-local-storage-encryption-gcm-no-database)
 11. [Configure the Directory Connection](#configure-the-directory-connection)
     1.  [openLDAP directory connection](#openldap-directory-connection)
 12. [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
-    1.  [Computed mode (Default) - Recommended](#computed-mode-default---recommended)
+    1.  [Computed mode (Default)](#computed-mode-default)
 13. [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
 14. [Configure Shibboleth Identity Provider to release the eduPersonTargetedID](#configure-shibboleth-identity-provider-to-release-the-edupersontargetedid)
-    1.  [Computed mode - using the computed persistent NameID - Recommended](#computed-mode---using-the-computed-persistent-nameid---recommended)
+    1.  [Computed mode - using the computed persistent NameID](#computed-mode---using-the-computed-persistent-nameid)
 15. [Configure Shibboleth IdP Logging](#configure-shibboleth-idp-logging)
 16. [Translate IdP messages into preferred language](#translate-idp-messages-into-preferred-language)
 17. [Enrich IdP Login Page with the Institutional Logo](#enrich-idp-login-page-with-the-institutional-logo)
@@ -574,7 +574,7 @@ Shibboleth Documentation reference: [StorageConfiguration](https://shibboleth.at
 
 The IdP provides a number of general-purpose storage facilities that can be used by core subsystems like session management and consent.
 
-### Default (HTML Local Storage, Encryption GCM, No Database) - Recommended
+### Default (HTML Local Storage, Encryption GCM, No Database)
 
 The HTML Local Storage requires JavaScript be enabled because reading and writing to the client requires an explicit page be rendered.
 Note that this feature is safe to enable globally. 
@@ -872,7 +872,7 @@ This part will teach you how to release the "*persistent*" identifiers with a da
 
 By default, a transient NameID will always be released to the Service Provider if the persistent one is not requested.
 
-### Computed mode (Default) - Recommended
+### Computed mode (Default)
 
 1.  Become ROOT:
 
@@ -981,7 +981,7 @@ eduPersonTargetedID is an abstracted version of the SAML V2.0 Name Identifier fo
 
 To be able to follow these steps, you need to have followed the previous steps on `persistent` NameID generation.
 
-### Computed mode - using the computed persistent NameID - Recommended
+### Computed mode - using the computed persistent NameID
 
 1.  Become ROOT:
 
