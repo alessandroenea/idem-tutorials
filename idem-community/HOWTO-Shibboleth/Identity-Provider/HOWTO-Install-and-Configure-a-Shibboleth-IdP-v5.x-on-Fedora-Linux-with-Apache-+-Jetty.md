@@ -872,7 +872,7 @@ This part will teach you how to release the "*persistent*" identifiers with a da
 
 By default, a transient NameID will always be released to the Service Provider if the persistent one is not requested.
 
-### Computed mode (Default)
+### Computed mode (Default & Recommended)
 
 1.  Become ROOT:
 
