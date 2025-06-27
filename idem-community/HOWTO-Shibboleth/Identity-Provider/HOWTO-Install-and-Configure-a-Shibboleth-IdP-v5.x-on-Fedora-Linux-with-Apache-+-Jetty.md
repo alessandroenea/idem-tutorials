@@ -1275,7 +1275,9 @@ Change the content of `idp.url.password.reset` and `idp.url.helpdesk` variables 
 
 3.  Check that the metadata is available on `/idp/shibboleth` location:
 
-`https://idp.example.org/idp/shibboleth`
+    ``` text
+    https://idp.example.org/idp/shibboleth
+    ```
 
 [[TOC](#table-of-contents)]
 
