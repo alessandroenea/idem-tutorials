@@ -326,7 +326,7 @@ Jetty is a Web server and a Java Servlet container. It will be used to run the I
     ```
 
     ``` text
-    wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/jetty-logging.properties" -O /opt/jetty/resources/jetty-logging.properties
+    wget "https://github.com/ConsortiumGARR/idem-tutorials/raw/master/idem-fedops/HOWTO-Shibboleth/Identity%20Provider/utils/jetty-11-logging.properties" -O /opt/jetty/resources/jetty-logging.properties
     ```
 
 11. Check if all settings are OK:
@@ -538,7 +538,7 @@ Jetty has had vulnerabilities related to directory indexing (sigh) so we suggest
 2.  Configure the Jetty Context Descriptor:
 
     ``` text
-    wget "https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/jetty-conf/idp.xml" -O /opt/jetty/webapps/idp.xml
+    wget "https://github.com/ConsortiumGARR/idem-tutorials/raw/master/idem-fedops/HOWTO-Shibboleth/Identity%20Provider/utils/idp.xml" -O /opt/jetty/webapps/idp.xml
     ```
 
     On `idp.xml` change the line:
@@ -1027,7 +1027,7 @@ To be able to follow these steps, you need to have followed the previous steps o
 3.  Create the custom `eduPersonTargetedID.properties` file:
 
     ``` text
-    wget https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/conf/attributes/custom/eduPersonTargetedID.properties -O /opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
+    wget https://github.com/ConsortiumGARR/idem-tutorials/raw/master/idem-fedops/HOWTO-Shibboleth/Identity%20Provider/utils/eduPersonTargetedID.properties -O /opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
     ```
 
 4.  Set proper owner/group with:
@@ -1292,7 +1292,7 @@ These instructions will regularly update the secret key (and increase its versio
 1.  Download `updateIDPsecrets.sh` into the right location:
 
     ``` text
-    wget https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/bin/updateIDPsecrets.sh -O /opt/shibboleth-idp/bin/updateIDPsecrets.sh
+    wget https://github.com/ConsortiumGARR/idem-tutorials/raw/master/idem-fedops/HOWTO-Shibboleth/Identity%20Provider/utils/updateIDPsecrets.sh -O /opt/shibboleth-idp/bin/updateIDPsecrets.sh
     ```
 
 2.  Provide the right privileges to the script:
@@ -1516,7 +1516,7 @@ Follow these steps **IF** your organization **IS NOT** connected to the [GARR Ne
 2.  Adding an `AttributeFilterPolicy` on the `conf/attribute-filter.xml` file:
 
     -   ``` text
-        wget https://registry.idem.garr.it/idem-conf/shibboleth/IDP5/conf/idem-example-arp.txt -O /opt/shibboleth-idp/conf/example-arp.txt
+        wget https://github.com/ConsortiumGARR/idem-tutorials/raw/master/idem-fedops/HOWTO-Shibboleth/Identity%20Provider/utils/idem-example-arp.txt -O /opt/shibboleth-idp/conf/example-arp.txt
         ```
 
     -   ``` text
