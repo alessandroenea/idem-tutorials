@@ -19,7 +19,7 @@
 11. [Configure the Directory Connection](#configure-the-directory-connection)
     1.  [openLDAP directory connection](#openldap-directory-connection)
 12. [Configure Shibboleth Identity Provider to release the persistent NameID](#configure-shibboleth-identity-provider-to-release-the-persistent-nameid)
-    1.  [Computed mode (Default)](#computed-mode-default)
+    1.  [Computed mode (Default & Recommended)](#computed-mode-default)
 13. [Configure the attribute resolver (sample)](#configure-the-attribute-resolver-sample)
 14. [Configure Shibboleth Identity Provider to release the eduPersonTargetedID](#configure-shibboleth-identity-provider-to-release-the-edupersontargetedid)
     1.  [Computed mode - using the computed persistent NameID](#computed-mode---using-the-computed-persistent-nameid)
